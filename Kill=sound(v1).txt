@@ -1,0 +1,29 @@
+// ==UserScript==
+// @name           kill=sound (moomoo.io)
+// @namespace      -
+// @version        1
+// @description    when you kill a guy it makes a sound
+// @author         hc
+// @match          *://moomoo.io/*
+// @match          *://dev.moomoo.io/*
+// @match          *://*sandbox.moomoo.io/*
+// @icon           https://cdn.discordapp.com/attachments/766971302345965608/768155377425449001/a_d75bd5cb2148adb5e8df51357043267a.gif
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var ezsound = new Audio("https://dl.dropboxusercontent.com/s/no05l68fg4qzyyr/Hit%20Marker.wav?dl=0");
+
+    var kills = 0;
+
+    setInterval(getkills, 1);
+
+    function getkills(){
+        var count = parseInt(document.getElementById("killCounter").innerText);
+        if(count > kills){
+            ezsound.play();
+        }
+        kills = count;
+    }
+})();

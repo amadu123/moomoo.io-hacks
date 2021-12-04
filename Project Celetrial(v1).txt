@@ -1,0 +1,3336 @@
+// ==UserScript==
+// @name         ????Project Celetrial????
+// @namespace    ??Spiciel??
+// @version      v1
+// @description  Kill All!!!!!!!
+// @author         [GG]GAMER
+// @match          *://moomoo.io/*
+// @match          *://dev.moomoo.io/*
+// @match          *://*sandbox.moomoo.io/*
+// @require https://greasyfork.org/scripts/368273-msgpack/code/msgpack.js?version=598723
+// @require http://code.jquery.com/jquery-3.3.1.min.js
+// @require https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
+// @icon    https://media.discordapp.net/attachments/759094121339158582/762938586726400020/a1479853846_5.png?width=427&height=427
+// ==/UserScript==
+setInterval(() => {
+    if (changehat == true) {
+        doNewSend(["13c", [0, 11, 0]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        setTimeout(() => {
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [0, 18, 1]]);
+        }, 150);
+        setTimeout(() => {
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["13c", [0, 16, 1]]);
+        }, 250);
+    }
+}, 450);
+setInterval(() => {
+    if (wingmod == true) {
+        doNewSend(["13c", [0, 13, 1]]);
+        setTimeout(() => {
+            doNewSend(["13c", [0, 19, 1]]);
+        }, 10);
+    }
+}, 10);
+setInterval(() => {
+    if (qh == 1) {
+        place(foodType, null)
+    }
+}, 0);
+
+let mouseX;
+let mouseY;
+
+let width;
+let height;
+
+setInterval(() => {
+    if (autoaim == true) {
+        doNewSend(["2", [nearestEnemyAngle]]);
+    }
+}, 10);
+
+setInterval(() => {
+    if (hatToggle == 1) {
+        if (oldHat != normalHat) {
+            hat(normalHat);
+            console.log("Tried. - Hat")
+        }
+        if (oldAcc != normalAcc) {
+            acc(normalAcc);
+            console.log("Tried. - Acc")
+        }
+        oldHat = normalHat;
+        oldAcc = normalAcc
+    }
+}, 25);
+
+function normal() {
+    hat(normalHat);
+    acc(normalAcc);
+}
+
+function aim(x, y) {
+    var cvs = document.getElementById("gameCanvas");
+    cvs.dispatchEvent(new MouseEvent("mousemove", {
+        clientX: x,
+        clientY: y
+
+    }));
+}
+
+let coreURL = new URL(window.location.href);
+window.sessionStorage.force = coreURL.searchParams.get("fc");
+
+var AIH = false;
+var nearestEnemy;
+var nearestEnemyAngle;
+var isEnemyNear;
+var instaSpeed = 230;
+var changehat = false;
+var wingmod = false;
+var primary;
+var secondary;
+var foodType;
+var wallType;
+var spikeType;
+var millType;
+var mineType;
+var boostType;
+var turretType;
+var spawnpadType;
+var autoaim = false;
+var tick = 1;
+var oldHat;
+var oldAcc;
+var enemiesNear;
+var normalHat;
+var normalAcc;
+var ws;
+var msgpack5 = msgpack; // NIGGER WHY DON'T YOU HAVE THIS DEFINED
+var boostDir;
+let myPlayer = {
+    id: null,
+    x: null,
+    y: null,
+    dir: null,
+    object: null,
+    weapon: null,
+    clan: null,
+    isLeader: null,
+    hat: null,
+    accessory: null,
+    isSkull: null
+};
+
+let healSpeed = 180;
+var qh = 0;
+let healToggle = 0;
+let hatToggle = 0;
+// Instas
+var ReverseLagInsta = 0;
+var LagInsta = 0;
+var RenizInsta = 0;
+var LegendaryInsta = 0;
+var nolaginsta = 0;
+var lasthat,lastacc,leadermsg,leaderid;
+var fmsg = false;
+document.msgpack = msgpack;
+
+function n() {
+    this.buffer = new Uint8Array([0]);
+    this.buffer.__proto__ = new Uint8Array;
+    this.type = 0;
+}
+
+WebSocket.prototype.oldSend = WebSocket.prototype.send;
+WebSocket.prototype.send = function(m) {
+    if (!ws) {
+        document.ws = this;
+
+        ws = this;
+        socketFound(this);
+    }
+    this.oldSend(m);
+};
+
+
+function socketFound(socket) {
+    socket.addEventListener('message', function(message) {
+        handleMessage(message);
+    });
+}
+
+function handleMessage(m) {
+    let temp = msgpack5.decode(new Uint8Array(m.data));
+    let data;
+    if (temp.length > 1) {
+        data = [temp[0], ...temp[1]];
+        if (data[1] instanceof Array) {
+            data = data;
+        }
+    } else {
+        data = temp;
+    }
+    let item = data[0];
+    if (!data) {
+        return
+    };
+
+    if (item === "io-init") {
+        let cvs = document.getElementById("gameCanvas");
+        width = cvs.clientWidth;
+        height = cvs.clientHeight;
+        $(window).resize(function() {
+            width = cvs.clientWidth;
+            height = cvs.clientHeight;
+        });
+        cvs.addEventListener("mousemove", e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+    }
+
+    if (item == "1" && myPlayer.id == null) {
+        myPlayer.id = data[1];
+    }
+    var PREFIX = "!"
+    if (data[0] == "ch" && data[1] == leaderid) {
+        if (fmsg == true) {
+            doNewSend(["ch", [data[2]]])
+        }
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2] == PREFIX+"insta") {
+        setTimeout(() => {
+            insta()
+            doNewSend(["ch", ["Insta.Exe.Done.Com"]])
+        },500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2] == PREFIX+"bow") {
+        setTimeout(() => {
+            bowinsta()
+            doNewSend(["ch", ["Bow.Insta.Exe.Done.Com"]])
+        },500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2] == PREFIX+"fmsg1") {
+        setTimeout(() => {
+            fmsg = true
+            doNewSend(["ch", ["Following Message..."]])
+        },500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2] == PREFIX+"fmsg0") {
+        setTimeout(() => {
+            fmsg = false
+            doNewSend(["ch", ["Unfollow message..."]])
+        },500);
+    }
+
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "pb") {
+        doNewSend(["6", [5]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [9]]);
+        doNewSend(["6", [33]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Polearm+Bow OP!"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "pm") {
+        doNewSend(["6", [5]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [9]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [28]]);
+        doNewSend(["6", [15]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Polearm+Musket OP!"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "mill") {
+        doNewSend(["6", [28]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Mill proe"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "km") {
+        doNewSend(["6", [3]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [9]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [4]]);
+        doNewSend(["6", [15]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["KaTana+Musket The Best combo!"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "kh") {
+        doNewSend(["6", [3]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [27]]);
+        doNewSend(["6", [10]]);
+        doNewSend(["6", [37]]);
+        doNewSend(["6", [4]]);
+        doNewSend(["6", [25]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Katana+hammer 1N$T4 Blocker"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "dp") {
+        doNewSend(["6", [7]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [10]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [28]]);
+        doNewSend(["6", [25]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["dagger+powerMill"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "sh") {
+        doNewSend(["6", [8]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [10]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [28]]);
+        doNewSend(["6", [25]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["stick+hammer"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "gb") {
+        doNewSend(["6", [1]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [9]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [2]]);
+        doNewSend(["6", [13]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Great axe Bow"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "gm") {
+        doNewSend(["6", [1]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [9]]);
+        doNewSend(["6", [33]]);
+        doNewSend(["6", [2]]);
+        doNewSend(["6", [15]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["great axe+ Musket"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "khp") {
+        doNewSend(["6", [3]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [27]]);
+        doNewSend(["6", [10]]);
+        doNewSend(["6", [37]]);
+        doNewSend(["6", [4]]);
+        doNewSend(["6", [36]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Katana+hammer+Spawndpad"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "rb") {
+        doNewSend(["6", [13]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Bow spam yeh"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "mill+pike") {
+        doNewSend(["6", [28]]);
+        doNewSend(["6", [25]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["mill+pike"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "katana") {
+        doNewSend(["6", [2]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Katana Slected"]]);
+        }, 500);
+    }
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ') == PREFIX + "axe") {
+        doNewSend(["6", [2]]);
+        setTimeout(() => {
+            doNewSend(["ch", ["Axe Slected"]]);
+        }, 500);
+    }
+    //Some Thing :)
+    if (data[0] == "ch" && data[1] == myPlayer.id && data[2].split(' ')[0] == PREFIX+"unClan") {
+        setTimeout(() => {
+            doNewSend(["ch", ["Left Clan"]]);
+            doNewSend(["9", [null]])
+        },500);
+    }
+    if (item == "33") {
+        enemiesNear = [];
+        for (let i = 0; i < data[1].length / 13; i++) {
+            let playerInfo = data[1].slice(13 * i, 13 * i + 13);
+            if (playerInfo[0] == myPlayer.id) {
+                myPlayer.x = playerInfo[1];
+                myPlayer.y = playerInfo[2];
+                myPlayer.dir = playerInfo[3];
+                myPlayer.object = playerInfo[4];
+                myPlayer.weapon = playerInfo[5];
+                myPlayer.clan = playerInfo[7];
+                myPlayer.isLeader = playerInfo[8];
+                myPlayer.hat = playerInfo[9];
+                myPlayer.accessory = playerInfo[10];
+                myPlayer.isSkull = playerInfo[11];
+            } else if (playerInfo[7] != myPlayer.clan || playerInfo[7] === null) {
+                enemiesNear.push(playerInfo);
+            }
+        }
+    }
+
+    isEnemyNear = false;
+    if (enemiesNear) {
+        nearestEnemy = enemiesNear.sort((a, b) => dist(a, myPlayer) - dist(b, myPlayer))[0];
+    }
+
+    if (nearestEnemy) {
+        nearestEnemyAngle = Math.atan2(nearestEnemy[2] - myPlayer.y, nearestEnemy[1] - myPlayer.x);
+        if (Math.sqrt(Math.pow((myPlayer.y - nearestEnemy[2]), 2) + Math.pow((myPlayer.x - nearestEnemy[1]), 2)) < 215) {
+            isEnemyNear = true;
+            if (autoaim == false && myPlayer.hat != 7 && myPlayer.hat != 53) {
+                normalHat = 6;
+                if (primary != 8) {
+                    normalAcc = 21
+                }
+            };
+        }
+    }
+    if (isEnemyNear == false && autoaim == false) {
+        normalAcc = 11;
+        if (myPlayer.y < 2400) {
+            normalHat = 15;
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550) {
+            normalHat = 31;
+        } else {
+            normalHat = 12;
+        }
+    }
+    if (!nearestEnemy) {
+        nearestEnemyAngle = myPlayer.dir;
+    }
+
+    if (item == "h" && data[1] == myPlayer.id) {
+        if (data[2] < 66 && data[2] > 0 && AIH == true) {
+            place(foodType);
+            place(foodType);
+        }
+    }
+    if (item == "h" && data[1] == myPlayer.id) {
+        if (data[2] < 90 && data[2] > 0 && healToggle == 1) {
+            setTimeout(() => {
+                doNewSend(['5', [foodType, null]]);
+                doNewSend(['c', [1]]);
+                doNewSend(['c', [0]]);
+                doNewSend(['5', [null]]);
+                doNewSend(['5', [foodType, null]]);
+                doNewSend(['c', [1]]);
+                doNewSend(['c', [0]]);
+                doNewSend(['5', [null]]);
+                doNewSend(['5', [foodType, null]]);
+                doNewSend(['c', [1]]);
+                doNewSend(['c', [0]]);
+                doNewSend(['5', [null]]);
+            }, healSpeed);
+
+        }
+    }
+
+    update();
+}
+
+
+
+function doNewSend(sender) {
+    ws.send(new Uint8Array(Array.from(msgpack5.encode(sender))));
+}
+
+function acc(id) {
+    doNewSend(["13c", [0, 0, 1]]);
+    doNewSend(["13c", [0, id, 1]]);
+}
+
+function hat(id) {
+    doNewSend(["13c", [0, id, 0]]);
+}
+
+function placeO(id, angle = Math.atan2(mouseY - height / 2, mouseX - width / 2)) {
+    doNewSend(["5", [myPlayer.weapon, true]]);
+    doNewSend(["5", [id, null]]);
+    doNewSend(["c", [1, angle]]);
+    doNewSend(["c", [0, angle]]);
+    doNewSend(["5", [myPlayer.weapon, true]]);
+}
+
+function place(id, angle = Math.atan2(mouseY - height / 2, mouseX - width / 2)) {
+    doNewSend(["5", [id, null]]);
+    doNewSend(["c", [1, angle]]);
+    doNewSend(["c", [0, angle]]);
+    doNewSend(["5", [myPlayer.weapon, true]]);
+}
+function boostmill() {
+    if(boostDir == null) {
+        boostDir = myPlayer.dir
+    }
+    place(millType, boostDir + toRad(90));
+    place(millType, boostDir - toRad(90));
+    place(boostType, boostDir);
+    doNewSend(["33", [boostDir]]);
+}
+function boostSpike() {
+    if (boostDir == null) {
+        boostDir = nearestEnemyAngle;
+    }
+    place(spikeType, boostDir + toRad(90));
+    place(spikeType, boostDir - toRad(90));
+    place(boostType, boostDir);
+    doNewSend(["33", [boostDir]]);
+}
+function insta() {
+    autoaim = true;
+    doNewSend(["13c", [0, 7, 0]]);
+    doNewSend(["5", [primary, true]]);
+    doNewSend(["13c", [0, 0, 1]]);
+    acc(18)
+    doNewSend(["c", [1]]);
+    setTimeout(() => {
+        doNewSend(["5", [secondary, true]]);
+        doNewSend(["13c", [0, 53, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        acc(21)
+    }, 105);
+    setTimeout(() => {
+        doNewSend(["5", [secondary, true]]);
+    }, 110);
+    setTimeout(() => {
+        doNewSend(["5", [secondary, true]]);
+    }, 115);
+    setTimeout(() => {
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["c", [0, null]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        hat(6)
+        acc(21)
+        autoaim = false;
+    }, 215);
+}
+function bowinsta() {
+    lasthat = myPlayer.hat
+    lastacc = myPlayer.accessory
+    doNewSend(["5", [secondary, true]]);
+    doNewSend(["c", [1]]);
+    doNewSend(["2", [nearestEnemyAngle]]);
+    doNewSend(["13c", [0, 53, 0]]);
+    doNewSend(["13c", [0, 19, 1]]);
+    setTimeout(() => {
+        doNewSend(["6", [12]]);
+        doNewSend(["2", [nearestEnemyAngle]]);
+    },100);
+    setTimeout(() => {
+        doNewSend(["6", [15]]);
+        doNewSend(["2", [nearestEnemyAngle]]);
+    },200);
+    setTimeout(() => {
+        doNewSend(["c", [null]]);
+        doNewSend(["5", [primary, true]]);
+        hat(lasthat)
+        acc(lastacc)
+    },300);
+    setTimeout(() => {
+        doNewSend(["2", [null]]);
+    },310);
+}
+
+
+var repeater = function(key, action, interval, bu) {
+    let _isKeyDown = false;
+    let _intervalId = undefined;
+
+    return {
+        start(keycode) {
+            if (keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = true;
+                if (_intervalId === undefined) {
+                    _intervalId = setInterval(() => {
+                        action();
+                        if (!_isKeyDown) {
+                            clearInterval(_intervalId);
+                            _intervalId = undefined;
+                            console.log("claered");
+                        }
+                    }, interval);
+                }
+            }
+        },
+
+        stop(keycode) {
+            if (keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = false;
+            }
+        }
+    };
+
+
+}
+
+const healer = repeater(81, () => {place(foodType)}, 0);
+const boostPlacer = repeater(70, () => {place(boostType)}, 0);
+const spikePlacer = repeater(86, () => {place(spikeType)}, 0);
+const millPlacer = repeater(78, () => {place(millType)}, 0);
+const turretPlacer = repeater(56, () => {place(turretType)}, 0);
+const boostSpiker = repeater(71, boostSpike, 0);
+const millboost = repeater(72, boostmill, 0);
+
+document.addEventListener('keydown', (e) => {
+    spikePlacer.start(e.keyCode);
+    healer.start(e.keyCode);
+    boostPlacer.start(e.keyCode);
+    millboost.start(e.keyCode);
+    boostSpiker.start(e.keyCode);
+    millPlacer.start(e.keyCode);
+    turretPlacer.start(e.keyCode);
+
+    if (e.keyCode == 73 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        for (let i = 0; i < 4; i++) {
+            let angle = myPlayer.dir + toRad(i * 90);
+            place(boostType, angle)
+        }
+    }
+
+    if (e.keyCode == 56 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        place(turretType, myPlayer.dir + toRad(45));
+        place(turretType, myPlayer.dir - toRad(45));
+    }
+
+    if (e.keyCode == 77 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        if (myPlayer.y < 2400) {
+            hat(15);
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550) {
+            hat(31);
+        } else {
+            hat(12);
+        }
+        acc(11);
+    }
+    if (e.keyCode == 192 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        setTimeout(() => {
+        doNewSend(["ch", ["!insta"]]);
+        }, 500);
+            }
+    if (e.keyCode == 190 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        setTimeout(() => {
+        doNewSend(["ch", ["!bow"]]);
+        }, 500);
+            }
+    if (e.keyCode == 85 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        var last = myPlayer.hat
+        var lastt = myPlayer.accessory
+        autoaim = true
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["7", [3]]);
+        setTimeout(() => {
+            doNewSend(["6", [5]]);
+            doNewSend(["6", [17]]);
+            doNewSend(["6", [31]]);
+            doNewSend(["6", [23]]);
+            doNewSend(["6", [9]]);
+            doNewSend(["6", [33]]);
+        }, 100);
+        setTimeout(() => {
+            doNewSend(["6", [4]]);
+        }, 200);
+        setTimeout(() => {
+            doNewSend(["5", [secondary, true]]);
+            doNewSend(["13c", [0, 53, 0]]);
+        }, 300);
+        setTimeout(() => {
+            doNewSend(["6", [15]]);
+        }, 420);
+        setTimeout(() => {
+            doNewSend(["7", [3]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, last, 0]]);
+            doNewSend(["13c", [0, lastt, 1]]);
+        }, 500);
+    }
+    if (e.keyCode == 32 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 19, 1]]);
+        doNewSend(["ch", ["2SpikesInsta"]]);
+        place(spikeType, myPlayer.dir + toRad(45));
+        place(spikeType, myPlayer.dir - toRad(45));
+        doNewSend(["c", [1]]);
+        setTimeout(() => {
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            autoaim = false;
+        }, 200);
+    }
+    if (e.keyCode == 188 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 19, 1]]);
+        doNewSend(["c", [1]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        setTimeout(() => {
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["5", [secondary, true]]);
+        }, 98);
+        setTimeout(() => {
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [0, 19, 1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["c", [null]]);
+            autoaim = false
+        }, 190);
+    }
+if(e.keyCode == 82 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        if (nolaginsta == 1) {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+                   doNewSend(["13c", [0, 7, 0]]);
+               doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["c", [1]]);
+        setTimeout( () => {
+               var sck = "";
+                   doNewSend(["13c", [0, 53, 0]]);
+                    doNewSend(["5", [secondary, true]]);
+                for(let i = 0; i < 265; i++){
+                    let caas = new Uint8Array(225);
+                    for(let i = 0; i <caas.length;i++){
+                        caas[i] = Math.floor(Math.random()*308);
+                        sck += caas[i]
+                    }
+                }
+                ws.send(caas);
+               }, 110);
+        setTimeout( () => {
+                      doNewSend(["13c", [0, 0, 0]]);
+               }, 80);
+        setTimeout( () => {
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["c", [0, null]]);
+                   doNewSend(["13c", [0, 6, 0]]);
+                 autoaim = false;
+               }, 245);
+}
+        if (LegendaryInsta == 1) {
+            autoaim = true;
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 0, 1]]);
+            acc(18)
+            doNewSend(["c", [1]]);
+            setTimeout(() => {
+                doNewSend(["5", [secondary, true]]);
+                doNewSend(["13c", [0, 53, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                acc(21)
+            }, 105);
+            setTimeout(() => {
+                doNewSend(["5", [secondary, true]]);
+            }, 110);
+            setTimeout(() => {
+                doNewSend(["5", [secondary, true]]);
+            }, 115);
+            setTimeout(() => {
+                doNewSend(["5", [primary, true]]);
+                doNewSend(["c", [0, null]]);
+                doNewSend(["13c", [0, 0, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                hat(6)
+                acc(21)
+                autoaim = false;
+            }, 215);
+        }
+        if (RenizInsta == 1) {
+            autoaim = true;
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["13c", [0, 18, 1]]);
+            doNewSend(["13c", [0, 18, 1]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["c", [1]]);
+            setTimeout(() => {
+                doNewSend(["5", [secondary, true]]);
+                doNewSend(["13c", [0, 19, 1]]);
+                doNewSend(["13c", [0, 19, 1]]);
+                doNewSend(["13c", [0, 53, 0]]);
+                doNewSend(["13c", [0, 21, 1]]);
+                doNewSend(["13c", [0, 21, 1]]);
+                doNewSend(["c", [1]]);
+            }, 100);
+            setTimeout(() => {
+                doNewSend(["5", [primary, true]]);
+                doNewSend(["c", [0, null]]);
+                doNewSend(["13c", [0, 0, 0]]);
+                doNewSend(["13c", [0, 6, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                autoaim = false
+            }, 250)
+        }
+        if (LagInsta == 1) {
+            autoaim = true;
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["13c", [0, 18, 1]]);
+            doNewSend(["c", [1]]);
+            setTimeout(() => {
+                var sck = "";
+                doNewSend(["13c", [0, 53, 0]]);
+                doNewSend(["13c", [0, 21, 1]]);
+                doNewSend(["5", [secondary, true]]);
+                for (let i = 0; i < 850; i++) {
+                    let caas = new Uint8Array(550);
+                    for (let i = 0; i < caas.length; i++) {
+                        caas[i] = Math.floor(Math.random() * 278);
+                        sck += caas[i]
+                    }
+                }
+                ws.send(caas);
+            }, 110);
+            setTimeout(() => {
+                doNewSend(["5", [primary, true]]);
+                doNewSend(["c", [0, null]]);
+                doNewSend(["13c", [0, 6, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                doNewSend(["13c", [0, 19, 1]]);
+                autoaim = false;
+            }, 230);
+        }
+        if (ReverseLagInsta == 1) {
+            autoaim = true;
+            doNewSend(["5", [secondary, true]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["13c", [0, 19, 1]]);
+            doNewSend(["c", [1]]);
+            setTimeout(() => {
+                doNewSend(["5", [primary, true]]);
+                doNewSend(["13c", [0, 7, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                doNewSend(["13c", [0, 18, 1]]);
+            }, instaSpeed - 130);
+            setTimeout(() => {
+                var sck = "";
+                for (let i = 0; i < 750; i++) {
+                    let caas = new Uint8Array(550);
+                    for (let i = 0; i < caas.length; i++) {
+                        caas[i] = Math.floor(Math.random() * 278);
+                        sck += caas[i]
+                    }
+                }
+                ws.send(caas);
+            }, 110);
+            setTimeout(() => {
+                doNewSend(["5", [primary, true]]);
+                doNewSend(["c", [0, null]]);
+                doNewSend(["13c", [0, 6, 0]]);
+                doNewSend(["13c", [0, 0, 1]]);
+                doNewSend(["13c", [0, 21, 1]]);
+                autoaim = false;
+            }, 200);
+        }
+    }
+    if (e.keyCode == 76 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        lasthat = myPlayer.hat
+        lastacc = myPlayer.accessory
+        doNewSend(["5", [secondary, true]]);
+        doNewSend(["c", [1]]);
+        doNewSend(["2", [nearestEnemyAngle]]);
+        doNewSend(["13c", [0, 53, 0]]);
+        doNewSend(["13c", [0, 19, 1]]);
+        setTimeout(() => {
+            doNewSend(["6", [12]]);
+            doNewSend(["2", [nearestEnemyAngle]]);
+        }, 100);
+        setTimeout(() => {
+            doNewSend(["6", [15]]);
+            doNewSend(["2", [nearestEnemyAngle]]);
+        }, 200);
+        setTimeout(() => {
+            doNewSend(["c", [null]]);
+            doNewSend(["5", [primary, true]]);
+            hat(lasthat)
+            acc(lastacc)
+        }, 300);
+        setTimeout(() => {
+            doNewSend(["2", [null]]);
+        }, 310);
+        setTimeout(() => {
+            lasthat = myPlayer.hat
+            lastacc = myPlayer.accessory
+            doNewSend(["5", [secondary, true]]);
+            doNewSend(["c", [1]]);
+            doNewSend(["2", [nearestEnemyAngle]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["13c", [0, 19, 1]]);
+        }, 0);
+        setTimeout(() => {
+            doNewSend(["6", [12]]);
+            doNewSend(["2", [nearestEnemyAngle]]);
+        }, 100);
+        setTimeout(() => {
+            doNewSend(["6", [15]]);
+            doNewSend(["2", [nearestEnemyAngle]]);
+        }, 200);
+        setTimeout(() => {
+            doNewSend(["c", [null]]);
+            doNewSend(["5", [primary, true]]);
+            hat(lasthat)
+            acc(lastacc)
+        }, 300);
+        setTimeout(() => {
+            doNewSend(["2", [null]]);
+        }, 310);
+    }
+    if (e.keyCode == 191 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ['Tp: On']]);
+        for (let i = 0; i < 4; i++) {
+            let angle = myPlayer.dir + toRad(i * 90);
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+            place(millType, angle)
+        }
+    }
+})
+
+document.addEventListener('keyup', (e) => {
+    spikePlacer.stop(e.keyCode);
+    boostPlacer.stop(e.keyCode);
+    millboost.stop(e.keyCode);
+    boostSpiker.stop(e.keyCode);
+    millPlacer.stop(e.keyCode);
+    turretPlacer.stop(e.keyCode);
+    healer.stop(e.keyCode);
+    if (e.keyCode == 71 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        setTimeout(() => {
+            doNewSend(["33", [null]]);
+            boostDir = null;
+        }, 10);
+    }
+})
+
+
+function isElementVisible(e) {
+    return (e.offsetParent !== null);
+}
+
+
+function toRad(angle) {
+    return angle * 0.01745329251;
+}
+
+function dist(a, b) {
+    return Math.sqrt(Math.pow((b.y - a[2]), 2) + Math.pow((b.x - a[1]), 2));
+}
+
+
+document.title = "Gl Wars Mod:ON"
+
+function update() {
+    for (let i = 0; i < 9; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            primary = i;
+        }
+    }
+
+    for (let i = 9; i < 16; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            secondary = i;
+        }
+    }
+
+    for (let i = 16; i < 19; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            foodType = i - 16;
+        }
+    }
+
+    for (let i = 19; i < 22; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            wallType = i - 16;
+        }
+    }
+
+    for (let i = 22; i < 26; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            spikeType = i - 16;
+        }
+    }
+
+    for (let i = 26; i < 29; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            millType = i - 16;
+        }
+    }
+
+    for (let i = 29; i < 31; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            mineType = i - 16;
+        }
+    }
+
+    for (let i = 31; i < 33; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))) {
+            boostType = i - 16;
+        }
+    }
+
+    for (let i = 33; i < 39; i++) {
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString())) && i != 36) {
+            turretType = i - 16;
+        }
+    }
+
+    spawnpadType = 36;
+}
+var ID_WinterCap = 15;
+var ID_FlipperHat = 31;
+var ID_MarksmanCap = 1;
+var ID_BushGear = 10;
+var ID_SoldierHelmet = 6;
+var ID_AntiVenomGear = 23;
+var ID_MusketeerHat = 32;
+var ID_MedicGear = 13;
+var ID_BullHelmet = 7;
+var ID_EmpHelmet = 22;
+var ID_BoosterHat = 12;
+var ID_BarbarianArmor = 26;
+var ID_BullMask = 46;
+var ID_WindmillHat = 14;
+var ID_SpikeGear = 11;
+var ID_BushidoArmor = 16;
+var ID_SamuraiArmor = 20;
+var ID_ScavengerGear = 27;
+var ID_TankGear = 40;
+var ID_TurretGear = 53;
+
+// Keys
+var TankGearKey = 90;
+var BullHelmetKey = 74;
+var SoldierHelmetKey = 67;
+var TurretKey = 75;
+var BoosterHatKey = 66;
+var uneqiup = 16;
+var SpikeGearKey = 89;
+var EmpKey = 84;
+var SamuKey = 79;
+var SpikeKey = 86;
+try {
+    document.getElementById("moomooio_728x90_home").style.display = "none";
+    $("moomooio728x90_home").parent().css({
+        display: "none"
+    });
+} catch (e) {
+    console.log("There was an error removing the ads.");
+}
+
+
+var menuChange = document.createElement("div");
+menuChange.className = "menuCard";
+menuChange.id = "mainSettings";
+menuChange.innerHTML = `
+<div id="simpleModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="closeBtn">&times;</span>
+<h2 style="font-size: 17px;">??Project Celestrial??</h2>
+</div>
+<div class="modal-body" style="font-size: 17px;">
+<div class="flexControl">
+<br><h3 class="menuPrompt">Tank Gear: </h3> <input value="${String.fromCharCode(TankGearKey)}" id="tankGear" class="keyPressLow" onkeyup="this.value = this.value.toUpperCase();" maxlength="1" type="text"/>
+<h3 class="menuPrompt">Bull Helmet: </h3> <input value="${String.fromCharCode(BullHelmetKey)}" id="bullHelm" class="keyPressLow" onkeyup="this.value = this.value.toUpperCase();" maxlength="1" type="text"/><br>
+<h3 class="menuPrompt">Soldier Helmet: </h3> <input value="${String.fromCharCode(SoldierHelmetKey)}" id="soldier" class="keyPressLow"onkeyup="this.value = this.value.toUpperCase();"  maxlength="1" type="text"/>
+<h3 class="menuPrompt">Turret Gear: </h3> <input value="${String.fromCharCode(TurretKey)}" id="turret" class="keyPressLow" maxlength="1" onkeyup="this.value = this.value.toUpperCase();" type="text"/><br>
+<br><h3 class="menuPrompt">Booster Hat: </h3> <input value="${String.fromCharCode(BoosterHatKey)}" id="booster" class="keyPressLow" maxlength="1" onkeyup="this.value = this.value.toUpperCase();" type="text"/>
+<h3 class="menuPrompt">Spike Gear: </h3> <input value="${String.fromCharCode(SpikeGearKey)}" id="spikeg" class="keyPressLow" maxlength="1" onkeyup="this.value = this.value.toUpperCase();" type="text"/><br>
+<br><h3 class="menuPrompt">Emp Helmet: </h3> <input value="${String.fromCharCode(EmpKey)}" id="emp" class="keyPressLow" onkeyup="this.value = this.value.toUpperCase();" maxlength="1" type="text"/>
+<h3 class="menuPrompt">Samurai Armor:</h3> <input value="${String.fromCharCode(SamuKey)}" id="samu" class="keyPressLow" onkeyup="this.value = this.value.toUpperCase();" maxlength="1" type="text"/><br>
+<h3 style="font-size: 17px;"style="font-size: 21px;"> Settings </h3>
+<label class="container"style="font-size: 17px;">??Cool Map??
+<input type="checkbox" id="myCheck">
+<span class="checkmark"></span>
+</label>
+<label class="container"style="font-size: 17px;">??Melee Mod?
+<input type="checkbox" id="m">
+<span class="checkmark"></span>
+</label>
+</label>
+<label class="container"style="font-size: 17px;">?Wing Spam?
+<input type="checkbox" id="n">
+<span class="checkmark"></span>
+</label>
+<br><label class="container"style="font-size: 17px;">??AutoHeal??Toggle
+<input type="checkbox" id="aht">
+<span class="checkmark"></span>
+</label>
+<br><label class="container"style="font-size: 17px;">??AutoHat??Toggle
+<input type="checkbox" id="auhat">
+<span class="checkmark"></span>
+</label>
+<br><label class="container"style="font-size: 17px;">Super Fast Heal
+<input type="checkbox" id="Super">
+<span class="checkmark"></span>
+<br><h3 style="font-size: 17px;"style="font-size: 21px;"> Insta </h3>
+</label>
+<br><label class="container">??Lag Insta??
+<input type="checkbox" id="LI">
+<span class="checkmark"></span>
+</label>
+<br><label class="container">??Reverse Lag Insta??
+<input type="checkbox" id="RLI">
+<span class="checkmark"></span>
+</label>
+<br><label class="container">??Reniz INSTA?
+<input type="checkbox" id="RI">
+<span class="checkmark"></span>
+</label>
+<br><label class="container">??Legendary INSTA??
+<input type="checkbox" id="LegendaryInsta">
+<span class="checkmark"></span>
+</label>
+<br><label class="container">??PerfectLag Insta??
+<input type="checkbox" id="NLI">
+<span class="checkmark"></span>
+<br></label>
+<label class="container"style="font-size: 17px;">Anti Insta
+<input type="checkbox" id="AIH">
+<span class="checkmark"></span>
+</label>
+<h3 style="font-size: 17px;"> Autochat settings </h3>
+<br>AutoChat:<input type="text" value="1" id="ach1" width="100" height="50"/><br>
+</div>
+</div>
+<div class="modal-footer">
+<h3 style="font-size: 17px;">By [GG] Gamer</h3>
+<p>Sub to [GG]Gamer</p>
+</div>
+</div>
+</div>
+`
+document.body.appendChild(menuChange)
+
+
+$("#tankGear").on("input", () => {
+    var cval = $("#tankGear").val();
+    if (cval) {
+        TankGearKey = cval.toUpperCase();
+        TankGearKey = TankGearKey.charCodeAt(0);
+        console.log(TankGearKey);
+    }
+});
+
+$("#bullHelm").on("input", () => {
+    var cval = $("#bullHelm").val();
+    if (cval) {
+        BullHelmetKey = cval.toUpperCase();
+        BullHelmetKey = BullHelmetKey.charCodeAt(0);
+        console.log(BullHelmetKey);
+    }
+});
+
+$("#soldier").on("input", () => {
+    var cval = $("#soldier").val();
+    if (cval) {
+        SoldierHelmetKey = cval.toUpperCase();
+        SoldierHelmetKey = SoldierHelmetKey.charCodeAt(0);
+        console.log(SoldierHelmetKey);
+    }
+});
+
+$("#turret").on("input", () => {
+    var cval = $("#turret").val();
+    if (cval) {
+        TurretKey = cval.toUpperCase();
+        TurretKey = TurretKey.charCodeAt(0);
+        console.log(TurretKey);
+    }
+});
+
+
+
+$("#emp").on("input", () => {
+    var cval = $("#emp").val();
+    if (cval) {
+        EmpKey = cval.toUpperCase();
+        EmpKey = EmpKey.charCodeAt(0);
+        console.log(EmpKey);
+    }
+});
+
+$("#samu").on("input", () => {
+    var cval = $("#samu").val();
+    if (cval) {
+        SamuKey = cval.toUpperCase();
+        SamuKey = SamuKey.charCodeAt(0);
+        console.log(SamuKey);
+    }
+});
+
+
+var styleItem = document.createElement("style");
+styleItem.type = "text/css";
+styleItem.appendChild(document.createTextNode(`
+.keyPressLow {
+    margin-left: 8px;
+    font-size: 16px;
+    margin-right: 8px;
+    height: 25px;
+    width: 45px;
+    background-color: #e6e0d4;
+    border-radius: 3.5px;
+    border: none;
+    text-align: center;
+    color: #b9f2ff;
+    border: 0.5px solid #e6e0d4;
+}
+.menuPrompt {
+    font-size: 18px;
+    font-family: '??';
+    color: #e6e0d4;
+    flex: 0.2;
+    text-align: center;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.modal-content {
+    margin: 10% auto;
+    width: 50%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.modal-header h2,
+.modal-footer h3 {
+  margin: 0;
+}
+
+.modal-header {
+    background: #b9f2ff;
+    padding: 15px;
+    color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-body {
+    padding: 10px 20px;
+    background: #fff00;
+}
+
+.modal-footer {
+    background: #b9f2ff;
+    padding: 10px;
+    color: #e6e0d4;
+    text-align: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.closeBtn {
+    color: #ccc;
+    float: right;
+    font-size: 30px;
+    color: #fff;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+`))
+document.head.appendChild(styleItem);
+
+
+$("#adCard").css({
+    display: "none"
+});
+$("#pre-content-container").css({
+    display: "none"
+});
+
+
+document.addEventListener('keydown', function(e) {
+    if (e.keyCode == uneqiup && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        console.log("done")
+        storeEquip(0);
+    } else if (e.keyCode == 27) {
+        if (modal.style.display = "none") {
+            modal.style.display = "block";
+        } else {
+            modal.style.display = "none";
+        }
+    } else if (e.keyCode == TankGearKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_TankGear);
+        doNewSend(["ch", ["TankGear:ON"]]);
+        doNewSend(["13c", [0, 21, 1]]);
+    } else if (e.keyCode == SoldierHelmetKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_SoldierHelmet);
+        doNewSend(["ch", ["SoldierHelmet:ON"]]);
+        doNewSend(["13c", [0, 19, 1]]);
+    } else if (e.keyCode == BullHelmetKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_BullHelmet);
+        doNewSend(["ch", ["BullHelmet:ON"]]);
+        doNewSend(["13c", [0, 18, 1]]);
+    } else if (e.keyCode == BoosterHatKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_BoosterHat);
+    } else if (e.keyCode == EmpKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_EmpHelmet);
+    } else if (e.keyCode == SamuKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_SamuraiArmor);
+        doNewSend(["ch", ["SamuraiArmor:ON"]]);
+        doNewSend(["13c", [0, 21, 1]]);
+    } else if (e.keyCode == SpikeGearKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_SpikeGear);
+    } else if (e.keyCode == TurretKey && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        storeEquip(ID_TurretGear);
+        doNewSend(["ch", ["TurretGear:ON"]]);
+        doNewSend(["13c", [0, 19, 1]]);
+    }
+})
+
+// Get modal element
+var modal = document.getElementById("simpleModal");
+// Get close button
+var closeBtn = document.getElementsByClassName('closeBtn')[0];
+
+// Events
+closeBtn.addEventListener('click', closeModal);
+window.addEventListener('click', outsideClick);
+
+// Close
+function closeModal() {
+    modal.style.display = 'none';
+}
+
+// Close If Outside Click
+function outsideClick(e) {
+    if (e.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+var m = document.querySelector("#m")
+
+m.addEventListener('change', function() {
+    if (this.checked) {
+        changehat = true
+        doNewSend(["ch", ["Melee Mod-ON"]]);
+    } else {
+        changehat = false
+        doNewSend(["ch", ["Melee Mod-OFF"]]);
+    }
+})
+var a1 = document.querySelector("#n")
+
+a1.addEventListener('change', function() {
+    if (this.checked) {
+        wingmod = true
+        doNewSend(["ch", ["Wing Change-ON"]]);
+    } else {
+        wingmod = false
+        doNewSend(["ch", ["Wing Change-OFF"]]);
+    }
+})
+var aht = document.querySelector("#aht")
+
+aht.addEventListener('change', function() {
+    if (this.checked) {
+        healToggle = 1
+        doNewSend(["ch", ["AutoHeal-ON"]]);
+    } else {
+        healToggle = 0
+        doNewSend(["ch", ["AutoHeal-OFF"]]);
+    }
+})
+var auhat = document.querySelector("#auhat")
+
+auhat.addEventListener('change', function() {
+    if (this.checked) {
+        hatToggle = 1
+        doNewSend(["ch", ["AutoHat-ON"]]);
+    } else {
+        healToggle = 0
+        doNewSend(["ch", ["AutoHat-OFF"]]);
+    }
+})
+var supa = document.querySelector("#Super")
+
+supa.addEventListener('change', function() {
+    if (this.checked) {
+        qh = 1
+        healToggle = 0
+        doNewSend(["ch", ["SuperFastHeal-ON"]]);
+    } else {
+        qh = 0
+        healToggle = 1
+        doNewSend(["ch", ["SuperFastHeal-OFF"]]);
+    }
+})
+var LI = document.querySelector("#LI")
+
+LI.addEventListener('change', function() {
+    if (this.checked) {
+        LagInsta = 1
+        ReverseLagInsta = 0
+        LegendaryInsta = 0
+        RenizInsta = 0
+       nolaginsta = 0
+        doNewSend(["ch", ["LagInsta-ON"]]);
+    } else {
+        LagInsta = 0
+        doNewSend(["ch", ["LagInsta-OFF"]]);
+    }
+})
+var RLI = document.querySelector("#RLI")
+
+RLI.addEventListener('change', function() {
+    if (this.checked) {
+        ReverseLagInsta = 1
+        LegendaryInsta = 0
+        LagInsta = 0
+        RenizInsta = 0
+       nolaginsta = 0
+        doNewSend(["ch", ["ReverseLagInsta-ON"]]);
+    } else {
+        ReverseLagInsta = 0
+        doNewSend(["ch", ["ReverseLagInsta-OFF"]]);
+    }
+})
+var RI = document.querySelector("#RI")
+
+RI.addEventListener('change', function() {
+    if (this.checked) {
+        RenizInsta = 1
+        ReverseLagInsta = 0
+        LegendaryInsta = 0
+        LagInsta = 0
+       nolaginsta = 0
+        doNewSend(["ch", ["ReniZInsta-ON"]]);
+    } else {
+        RenizInsta = 0
+        doNewSend(["ch", ["ReniZInsta-OFF"]]);
+    }
+})
+var LEGEND = document.querySelector("#LegendaryInsta")
+
+LEGEND.addEventListener('change', function() {
+    if (this.checked) {
+        LegendaryInsta = 1
+        ReverseLagInsta = 0
+        LagInsta = 0
+        RenizInsta = 0
+       nolaginsta = 0
+        doNewSend(["ch", ["legendaryInsta-ON"]]);
+    } else {
+        LegendaryInsta = 0
+        doNewSend(["ch", ["LegendaryInsta-OFF"]]);
+    }
+})
+var Nolag = document.querySelector("#NLI")
+
+Nolag.addEventListener('change', function() {
+    if (this.checked) {
+        LegendaryInsta = 1
+        ReverseLagInsta = 0
+        LagInsta = 0
+        RenizInsta = 0
+        nolaginsta = 1
+        doNewSend(["ch", ["PerfectLagInsta-ON"]]);
+    } else {
+        nolaginsta = 0
+        doNewSend(["ch", ["PerfectLagInsta-OFF"]]);
+    }
+})
+var Antiinsta = document.querySelector("#AIH")
+
+Antiinsta.addEventListener('change', function() {
+    if (this.checked) {
+        AIH = true
+        doNewSend(["ch", ["AntiInsta-ON"]]);
+    } else {
+        AIH = false
+        doNewSend(["ch", ["AntiInsta-OFF"]]);
+    }
+})
+
+var checkbox = document.querySelector("#myCheck")
+
+checkbox.addEventListener('change', function() {
+    if (this.checked) {
+        $("#mapDisplay").css({
+            background: `url('https://media.discordapp.net/attachments/759094121339158582/762938586726400020/a1479853846_5.png?width=427&height=427')`
+        });
+        console.log('checked')
+    } else {
+        $("#mapDisplay").css({
+            background: `rgba(0, 0, 0, 0.25)`
+        })
+        console.log('unchecked')
+    }
+})
+var lel = false;
+
+function nothig() {
+    var lel = false;
+    console.log("fOlS");
+}
+setInterval(() => {
+    var ach = document.getElementById("ach1").value;
+    if (ach == 1) {
+        nothig();
+    } else {
+        doNewSend(["ch", [ach]]);
+    }
+}, 1000);
+
+unsafeWindow.admob = {
+    requestInterstitialAd: () => {},
+    showInterstitialAd: () => {}
+}
+
+function ichat(space, chance) {
+    var ach1 = document.getElementById("ach2").value;
+    let result = '';
+    let characters;
+    if (space) {
+        characters = ach1;
+    }
+    if (space) {
+        characters = characters.padStart((30 - characters.length) / 2 + characters.length)
+        characters = characters.padEnd(30);
+    }
+    let count = 0;
+    for (let i = 0; i < characters.length; i++) {
+        if (Math.floor(Math.random() * chance) == 0 && characters.charAt(i) != "-" && count < 0 && characters.charAt(i) != " ") {
+            result += "";
+            count++
+        } else {
+            result += characters.charAt(i);
+        }
+    }
+    return result;
+}
+
+const stycross = [
+    "Default (Cursor)","Default (Crosshair)","Default (Red)","Default (Blue)","Default (Green)","Default (Yellow)","Default (Purple)","Middle Finger","Corona Virus (Red)","Corona Virus (Blue)","Minecraft Sword","Minecraft Pickaxe","Minecraft Axe","Reddot","Crossdot","Smalldot","Crosshair","Crosshair Maxi","Crosshair Mini","Crosshair Spray","Crosshair Sniper","Crosshair Bazooka","Crosshair Alien","Crosshair (Black)","Crosshair (Red)","Crosshair (Blue)","Crosshair (Green)","Crosshair (Gold)","Crosshair (Gold+)","Crosshair (Silver)","CrosshairX (Black)","CrosshairX (Red)","CrosshairX (Blue)","CrosshairX (Green)","CrosshairL (Red)","CrosshairL (Blue)","CrosshairL (Green)","CrosshairL (Yellow)","CrosshairL (Purple)",
+];
+
+var stylerSelect = document.createElement("select");
+stylerSelect.style.backgroundColor = "white";
+stylerSelect.style.color = "red";
+stylerSelect.id = "cursor-game";
+stylerSelect.style.marginBottom = "0px";
+for (var mn = 0; mn < stycross.length; mn++) {
+    var optioner = document.createElement("option");
+    optioner.text = stycross[mn];
+    if(stycross[mn] == "Default (Cursor)") { optioner.value="auto"; }
+    if(stycross[mn] == "Default (Crosshair)") { optioner.value="url('http://cur.cursors-4u.net/user/use-1/use153.cur'), auto"; }
+    if(stycross[mn] == "Default (Blue)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=25204'), auto"; }
+    if(stycross[mn] == "Default (Red)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=25209'), auto"; }
+    if(stycross[mn] == "Default (Green)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=25203'), auto"; }
+    if(stycross[mn] == "Default (Yellow)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=25211'), auto"; }
+    if(stycross[mn] == "Default (Purple)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=25208'), auto"; }
+    if(stycross[mn] == "Middle Finger") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=23291'), auto"; }
+    if(stycross[mn] == "Corona Virus (Red)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=134748'), auto"; }
+    if(stycross[mn] == "Corona Virus (Blue)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=134662'), auto"; }
+    if(stycross[mn] == "Minecraft Sword") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=129896'), auto"; }
+    if(stycross[mn] == "Minecraft Pickaxe") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=129911'), auto"; }
+    if(stycross[mn] == "Minecraft Axe") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=129903'), auto"; }
+    if(stycross[mn] == "Crosshair Maxi") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=30924'), auto"; }
+    if(stycross[mn] == "Crosshair Mini") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=30925'), auto"; }
+    if(stycross[mn] == "Crosshair Spray") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=31245'), auto"; }
+    if(stycross[mn] == "Crosshair Sniper") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=31250'), auto"; }
+    if(stycross[mn] == "Crosshair Bazooka") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=31248'), auto";}
+    if(stycross[mn] == "CrosshairX (Black)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42279'), auto"; }
+    if(stycross[mn] == "CrosshairX (Blue)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42285'), auto"; }
+    if(stycross[mn] == "CrosshairX (Red)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42287'), auto"; }
+    if(stycross[mn] == "CrosshairX (Green)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42286'), auto"; }
+    if(stycross[mn] == "Crosshair Alien") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42281'), auto"; }
+    if(stycross[mn] == "Crosshair (Black)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42280'), auto"; }
+    if(stycross[mn] == "Crosshair (Blue)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42288'), auto"; }
+    if(stycross[mn] == "Crosshair (Red)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42290'), auto"; }
+    if(stycross[mn] == "Crosshair (Green)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42289'), auto"; }
+    if(stycross[mn] == "Crosshair (Gold)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=97792'), auto"; }
+    if(stycross[mn] == "Crosshair (Gold+)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=97801'), auto"; }
+    if(stycross[mn] == "Crosshair (Silver)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=99159'), auto"; }
+    if(stycross[mn] == "Reddot") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=47970'), auto"; }
+    if(stycross[mn] == "Crossdot") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=47974'), auto"; }
+    if(stycross[mn] == "Smalldot") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=47971'), auto"; }
+    if(stycross[mn] == "CrosshairL (Blue)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42292'), auto"; }
+    if(stycross[mn] == "CrosshairL (Red)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42294'), auto"; }
+    if(stycross[mn] == "CrosshairL (Green)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42293'), auto"; }
+    if(stycross[mn] == "CrosshairL (Yellow)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42300'), auto"; }
+    if(stycross[mn] == "CrosshairL (Purple)") { optioner.value="url('http://www.rw-designer.com/cursor-extern.php?id=42295'), auto"; }
+    stylerSelect.add(optioner);
+}
+
+document.getElementById("setupCard").appendChild(stylerSelect);
+
+stylerSelect.onchange = function() {
+
+    document.body.style.cursor = document.getElementById('cursor-game').options[document.getElementById('cursor-game').selectedIndex].value;
+}
+var ues = storeEquip;
+var sec = 0;
+var Menit = 0;
+var Houre = 0;
+setInterval(() => {
+    setTimeout( () => {
+        sec = (sec + 1)
+    }, 0);
+}, 1000);
+setInterval(() => {
+    if(sec == 60){
+        sec = 0;
+        Menit = (Menit + 1)
+    }
+}, 0);
+setInterval(() => {
+    if(Menit == 60){
+        Menit = 0;
+        Houre = (Houre + 1)
+    }
+}, 0);
+
+var Clock = document.createElement("div");
+Clock.style.padding = "5px";
+Clock.id = "ClockDiv";
+Clock.style.font = "30px Arial";
+Clock.style.display = "block";
+Clock.style.position = "fixed";
+Clock.style.top = "0%";
+Clock.style.left = "0%";
+Clock.textContent = "Loading";
+document.body.appendChild(Clock);
+setInterval(()=>{
+    Clock.textContent = "CloCk [ "+Houre+":"+Menit+":"+sec+' ]';
+}, 0);
+var w = document.createElement("div");
+w.style.padding = "5px";
+w.id = "wDiv";
+w.style.font = "30px Arial";
+w.style.display = "block";
+w.style.position = "fixed";
+w.style.top = "0%";
+w.style.left = "0%";
+w.textContent = "Loading";
+document.body.appendChild(w);
+setInterval(()=>{
+    w.textContent = "CloCk [ "+Houre+":"+Menit+":"+sec+' ]';
+}, 0);
+var S = document.createElement("div");
+S.style.padding = "5px";
+S.id = "SDiv";
+S.style.font = "30px Arial";
+S.style.display = "block";
+S.style.position = "fixed";
+S.style.top = "0%";
+S.style.left = "0%";
+S.textContent = "Loading";
+document.body.appendChild(S);
+setInterval(()=>{
+    S.textContent = "CloCk [ "+Houre+":"+Menit+":"+sec+' ]';
+}, 0);
+var d = document.createElement("div");
+d.style.padding = "5px";
+d.id = "dDiv";
+d.style.font = "30px Arial";
+d.style.display = "block";
+d.style.position = "fixed";
+d.style.top = "0%";
+d.style.left = "0%";
+d.textContent = "Loading";
+document.body.appendChild(d);
+setInterval(()=>{
+    d.textContent = "CloCk [ "+Houre+":"+Menit+":"+sec+' ]';
+}, 0);
+var a = document.createElement("div");
+a.style.padding = "5px";
+a.id = "aDiv";
+a.style.font = "30px Arial";
+a.style.display = "block";
+a.style.position = "fixed";
+a.style.top = "0%";
+a.style.left = "0%";
+a.textContent = "Loading";
+document.body.appendChild(a);
+setInterval(()=>{
+    a.textContent = "CloCk [ "+Houre+":"+Menit+":"+sec+' ]';
+}, 0);
+//AutoBuy
+//U CAN ADD 1 / IN START OF AUTO BUY TO STOP IT
+function Parse() {
+                    document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 89124) {
+                            storeBuy(6)
+                            console.info('Attempted to buy soldier')
+                        }
+                    });
+                };
+
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 161475278) {
+                            storeBuy(12)
+                            console.info('Attempted to buy samurai')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 2278271) {
+                            storeBuy(22)
+                            console.info('Attempted to buy emp')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 782725) {
+                            storeBuy(20)
+                            console.info('Attempted to buy flipper')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 728721) {
+                            storeBuy(26)
+                            console.info('Attempted to buy Barbarian')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 828724) {
+                            storeBuy(7)
+                            console.info('Attempted to buy bull')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 728723) {
+                            storeBuy(11)
+                            console.info('Attempted to buy Spike')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 728724) {
+                            storeBuy(53)
+                            console.info('Attempted to buy turret')
+                        }
+                        }
+                    );
+                ;
+                     document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 928720) {
+                            storeBuy(40)
+                            console.info('Attempted to buy Tank')
+                        }
+                        }
+                    );
+                ;
+                           document.addEventListener('keydown', function (CustomKey1) {
+                        if (CustomKey1.keyCode == 128727) {
+                            storeBuy(27)
+                            console.info('Attempted to buy scavenger')
+                        }
+                        }
+                    );
+                ;
+Parse();
+//some css
+// ==UserScript==
+// @name         This is a basic script, just visual moomoo.io changes.
+// @namespace    This is a basic script, just visual moomoo.io changes.
+// @version      2.2.1
+// @match        *://*.moomoo.io/*
+// @match        *://dev.moomoo.io/*
+// @description  A few changes.
+// @author       I Copy From A Mod
+// @match        *://sandbox.moomoo.io/*
+// @grant        none
+// ==/UserScript==
+
+document.getElementById('gameName').innerHTML = 'GL War';
+setInterval(() => {
+    setTimeout(() => {
+        document.getElementById("gameName").innerHTML = "GL War"
+        setTimeout(() => {
+            document.getElementById("gameName").innerHTML = "GL War"
+            setTimeout(() => {
+                document.getElementById("gameName").innerHTML = "GL War"
+                setTimeout(() => {
+                    document.getElementById("gameName").innerHTML = "GL Warl"
+                    setTimeout(() => {
+                        document.getElementById("gameName").innerHTML = "GL|Warr"
+                        setTimeout(() => {
+                            document.getElementById("gameName").innerHTML = "GL War"
+                            setTimeout(() => {
+                                document.getElementById("gameName").innerHTML = "GL War"
+                                setTimeout(() => {
+                                    document.getElementById("gameName").innerHTML = "GL War"
+                                    setTimeout(() => {
+                                        document.getElementById("gameName").innerHTML = "GL War"
+                                        setTimeout(() => {
+                                            document.getElementById("gameName").innerHTML = "GL War"
+                                            setTimeout(() => {
+                                                document.getElementById("gameName").innerHTML = "Op Mod"
+                                                setTimeout(() => {
+                                                    document.getElementById("gameName").innerHTML = "Proe Mod"
+                                                }, 100);
+                                            }, 100);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 100);
+}, 1850);
+setInterval(() => {
+    setTimeout(() => {
+        document.getElementById('chatBox').placeholder = "??Message??";
+        setTimeout(() => {
+            document.getElementById('chatBox').placeholder = "??Message.??";
+            setTimeout(() => {
+                document.getElementById('chatBox').placeholder = "??Message..??";
+                setTimeout(() => {
+                    document.getElementById('chatBox').placeholder = "??Message...??";
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 100);
+}, 500)
+document.getElementById('enterGame').innerHTML = '~|?? PLAY ??|~';
+setInterval(() => {
+    setTimeout(() => {
+        document.getElementById('enterGame').innerHTML = "??GL WAr??"
+        setTimeout(() => {
+            document.getElementById('enterGame').innerHTML = "??GL War??"
+            setTimeout(() => {
+                document.getElementById('enterGame').innerHTML = "??GL War??"
+                setTimeout(() => {
+                    document.getElementById('enterGame').innerHTML = "??GL War??"
+                    setTimeout(() => {
+                        document.getElementById('enterGame').innerHTML = "??GL War??"
+                        setTimeout(() => {
+                            document.getElementById('enterGame').innerHTML = "??GL War??"
+                            setTimeout(() => {
+                                document.getElementById('enterGame').innerHTML = "??GL War??"
+                                setTimeout(() => {
+                                    document.getElementById('enterGame').innerHTML = "??GL War??"
+                                    setTimeout(() => {
+                                        document.getElementById('enterGame').innerHTML = "??GL War??"
+                                        setTimeout(() => {
+                                            document.getElementById('enterGame').innerHTML = "??GL War??"
+                                            setTimeout(() => {
+                                                document.getElementById('enterGame').innerHTML = "??GL War??"
+                                                setTimeout(() => {
+                                                    document.getElementById('enterGame').innerHTML = "??GL War??"
+                                                }, 100);
+                                            }, 100);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 100);
+}, 1850);
+document.getElementById("gameName").style.color = "cyan";
+document.getElementById("guideCard").remove();
+document.getElementById('loadingText').innerHTML = '. . . . . . . . . Load ??GL War?? . . . . . . . . . .';
+document.getElementById('nameInput').placeholder = "??GL War?? ";
+document.getElementById('chatBox').placeholder = "??GL War??";
+document.getElementById("pingDisplay").style.color = "cyan";
+document.getElementById('diedText').innerHTML = 'Game Over';
+document.getElementById('diedText').style.color = "cyan";
+
+document.getElementById("storeHolder").style = "height: 2200px; width: 450px;"
+document.getElementById("allianceHolder").style = "height: 1200px; width: 450px;"
+
+document.getElementById('adCard').remove();
+document.getElementById('errorNotification').remove();
+document.getElementById('youtuberOf').remove();
+document.getElementById('promoImg').remove();
+
+document.getElementById("leaderboard").style.color = "cyan";
+document.getElementById("gameName").style.color = "cyan";
+document.getElementById("setupCard").style.color = "cyan";
+document.getElementById("promoImg").remove();
+document.getElementById("scocyanisplay").style.color = "cyan";
+document.getElementById("woodDisplay").style.color = "cyan";
+document.getElementById("stoneDisplay").style.color = "cyan";
+document.getElementById("killCounter").style.color = "cyan";
+document.getElementById("foodDisplay").style.color = "cyan";
+document.getElementById("ageText").style.color = "black";
+document.getElementById("allianceButton").style.color = "white";
+document.getElementById("chatButton").style.color = "white";
+document.getElementById("storeButton").style.color = "white";
+
+$('.menuCard').css({'white-space': 'normal',
+                    'text-align': 'center',
+                    'background-color': 'rgba(0, 0, 0, 0)',
+                    '-moz-box-shadow': '0px 0px rgba(255, 255, 255, 0)',
+                    '-webkit-box-shadow': '0px 0px rgba(255, 255, 255, 0)',
+                    'box-shadow': '0px 0px rgba(255, 255, 255, 0)',
+                    '-webkit-border-radius': '0px',
+                    '-moz-border-radius': '0px',
+                    'border-radius': '0px',
+                    'margin': '15px',
+                    'margin-top': '15px'});
+
+$('#menuContainer').css({'white-space': 'normal'});
+
+$('#nativeResolution').css({'cursor': 'pointer'});
+
+$('#playMusic').css({'cursor': 'pointer'});
+
+$('#guideCard').css({'overflow-y': 'hidden',
+                     'margin-top': 'auto',
+                     'margin-bottom': '30px'});
+
+$('#gameName').css({'color': '#000000',
+                    'text-shadow': '0 1px 0 rgba(231, 76, 60), 0 2px 0 rgba(231, 76, 60), 0 3px 0 rgba(231, 76, 60), 0 4px 0 rgba(231, 76, 60), 0 5px 0 rgba(231, 76, 60), 0 6px 0 rgba(231, 76, 60), 0 7px 0 rgba(231, 76, 60), 0 8px 0 rgba(231, 76, 60), 0 9px 0 rgba(255, 0, 0)',
+                    'text-align': 'center',
+                    'font-size': '156px',
+                    'margin-bottom': '-30px'});
+
+
+$('#skinColorHolder').css({'margin-bottom': '30.75px'});
+
+$('.settingRadio').css({'margin-bottom': '30.75px'});
+
+
+
+$('#linksContainer2').css({'-webkit-border-radius': '0px 0 0 0',
+                           '-moz-border-radius': '0px 0 0 0',
+                           'border-radius': '0px 0 0 0',
+                           'right': '44%',
+                           'left': '44%',
+                           'background-color': 'rgba(0, 0, 0, 0)',
+                           'text-align': 'center',
+                           'bottom': '12px'});
+
+$('#gameName').css({'color': '#144db4',
+                    'text-shadow': '0 1px 0 rgba(231, 76, 60), 0 2px 0 rgba(231, 76, 60), 0 3px 0 rgba(231, 76, 60), 0 4px 0 rgba(231, 76, 60), 0 5px 0 rgba(231, 76, 60), 0 6px 0 rgba(231, 76, 60), 0 7px 0 rgba(231, 76, 60), 0 8px 0 rgba(231, 76, 60), 0 9px 0 rgba(255, 0, 0)',
+                    'text-align': 'center',
+                    'font-size': '156px',
+                    'margin-bottom': '-30px'});
+
+$('pingDisplay').css({'color': '#00dcff',
+                      'text-shadow': '0 1px 0 rgba(255, 255, 255, 0), 0 2px 0 rgba(255, 255, 255, 0), 0 3px 0 rgba(255, 255, 255, 0), 0 4px 0 rgba(255, 255, 255, 0), 0 5px 0 rgba(255, 255, 255, 0), 0 6px 0 rgba(255, 255, 255, 0), 0 7px 0 rgba(255, 255, 255, 0), 0 8px 0 rgba(255, 255, 255, 0), 0 9px 0 rgba(255, 255, 255, 0)',
+                      'text-align': 'center',
+                      'font-size': '156px',
+                      'margin-bottom': '-30px'});
+
+$('#loadingText').css({'color': '#000000',
+                       'background-color': 'rgba(0, 0, 0, 0)',
+                       'padding': '8px',
+                       'right': '150%',
+                       'left': '150%',
+                       'margin-top': '40px'});
+
+$('.ytLink').css({'color': '#144db4',
+                  'padding': '8px',
+                  'background-color': 'rgba(0, 0, 0, 0)'});
+
+$('.menuLink').css({'color': '#144db4'});
+
+$('#nameInput').css({'border-radius': '0px',
+                     '-moz-border-radius': '0px',
+                     '-webkit-border-radius': '0px',
+                     'border': 'hidden'});
+
+$('#serverSelect').css({'cursor': 'pointer',
+                        'color': '#000000',
+                        'background-color': '#808080',
+                        'border': 'hidden',
+                        'font-size': '20px'});
+
+$('.menuButton').css({'border-radius': '0px',
+                      '-moz-border-radius': '0px',
+                      '-webkit-border-radius': '0px'});
+
+$('#promoImgHolder').css({'position': 'absolute',
+                          'bottom': '-7%',
+                          'left': '20px',
+                          'width': '420px',
+                          'height': '236.25px',
+                          'padding-bottom': '18px',
+                          'margin-top': '0px'});
+
+$('#adCard').css({'position': 'absolute',
+                  'bottom': '-7%',
+                  'right': '20px',
+                  'width': '420px',
+                  'height': '236.25px',
+                  'padding-bottom': '18px'});
+
+
+$('.menuHeader').css({'color': 'rgba(255, 255, 255, 1)'});
+
+$('#killCounter').css({'color': '#ededed'});
+
+$('#diedText').css({'background-color': 'rgba(0, 0, 0, 0)'});
+
+$('#gameCanvas').css({'background-color': '#f4f4f4'});
+
+$('#allianceButton').css({'color': 'rgba(241, 241, 241, 1)'});
+
+$('#storeButton').css({'color': 'rgba(241, 241, 241, 1)'});
+
+$('#chatButton').css({'color': 'rgba(241, 241, 241, 1)'});
+
+$('.gameButton').css({'-webkit-border-radius': '0px 0 0 0',
+                      '-moz-border-radius': '0px 0 0 0',
+                      'border-radius': '0px 0 0 0',
+                      'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('.uiElement, .resourceDisplay').css({'-webkit-border-radius': '0px',
+                                       '-moz-border-radius': '0px',
+                                       'border-radius': '0px',
+                                       'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('#chatBox').css({'-webkit-border-radius': '0px',
+                   '-moz-border-radius': '0px',
+                   'border-radius': '700px',
+                   'background-color': 'rgba(0, 0, 0, 0.18)',
+                   'text-align': 'center'});
+
+$('#foodDisplay').css({'color': '#ae4d54'});
+
+$('#storeItem').css({'color': '80eefc'});
+
+$('#woodDisplay').css({'color': '#758f58'});
+
+$('#stoneDisplay').css({'color': '#818198'});
+
+$('#scocyanisplay').css({'color': '#c2b17a'});
+
+    $("#leaderboard").css({
+  'border':'3px solid #FFB900'
+});
+
+$('#ageText').css({'color': '#ffdfd'});
+
+$('#ageBar').css({'-webkit-border-radius': '10px',
+                  '-moz-border-radius': '10px',
+                  'border-radius': '10px',
+                  'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('#ageBarBody').css({'-webkit-border-radius': '10px',
+                      '-moz-border-radius': '10px',
+                      'border-radius': '10px',
+                      'background-color': '#ae4d54'});
+
+$('.storeTab').css({'-webkit-border-radius': '0px',
+                    '-moz-border-radius': '0px',
+                    'border-radius': '0px',
+                    'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('#storeHolder').css({'-webkit-border-radius': '10px',
+                       '-moz-border-radius': '20px',
+                       'border-radius': '50px',
+                       'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('#allianceHolder').css({'-webkit-border-radius': '0px',
+                          '-moz-border-radius': '0px',
+                          'border-radius': '0px',
+                          'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('.actionBarItem').css({'-webkit-border-radius': '0px',
+                         'border-radius': '0px',
+                         'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+$('#itemInfoHolder').css({'text-align': 'center',
+                          'color': '#00dcff',
+                          'top': '75px',
+                          'left': '350px',
+                          'right': '350px',
+                          'max-width': '650px'});
+
+// document.addEventListener("keydown", function(a) {if (a.keyCode == 8,9,13,16,17,18,19,20,27,33,34,35,36,37,38,39,40,45,46,48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,96,97,98,100,101,102,103,104,105,106,107,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,144,145,186,187,188,189,190,191,192,219,220,221,222) {document.getElementById("nameInput").value="FERANYZERIR BOT";}}, false);
+
+var myElement = document.querySelector('#nameInput');
+myElement.style.backgroundColor = "#fffdfd";
+myElement.style.color = "#000000";
+
+var getElement = document.querySelector('#enterGame');
+getElement.style.backgroundColor = "#d61818";
+getElement.style.color = "#000000";
+
+$('#leaderboard').append('??GL War??');

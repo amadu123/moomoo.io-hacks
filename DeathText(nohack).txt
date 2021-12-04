@@ -1,0 +1,15 @@
+// ==UserScript==
+// @name Moomoo.io Death text
+// @namespace http://tampermonkey.net/
+// @version 0.3
+// @description Death text input in moomoo.io
+// @author You
+// @match http://moomoo.io/*
+// @match http://sandbox.moomoo.io/*
+// @match http://dev.moomoo.io/*
+// @icon https://www.linkpicture.com/q/hat_45-2.png
+// @grant none
+// ==/UserScript==
+var deathTextInput=prompt('Death text')
+var deathText=document.getElementById('diedText')
+deathText.innerHTML=(deathTextInput);

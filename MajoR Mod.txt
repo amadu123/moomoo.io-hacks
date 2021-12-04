@@ -1,0 +1,3195 @@
+// ==UserScript==
+// @name        MajoR Mod
+// @namespace    -
+// @version     Last
+// @author       MajoR/adL
+// @match        *://moomoo.io/*
+// @match        *://sandbox.moomoo.io/*
+// @match        *://dev.moomoo.io/*
+// @grant        none
+// @Credits to MajoR ,adL making this hack.
+// @require https://greasyfork.org/scripts/368273-msgpack/code/msgpack.js?version=598723
+// @require http://code.jquery.com/jquery-3.3.1.min.js
+// @require https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
+// ==/UserScript==
+//This for crash all servers
+
+$( "#partyButton, #joinPartyButton" ).wrapAll( '<div class="partyWrap"></div>' );
+
+$( "#linksContainer2 > a:nth-child(1)" ).replaceWith( '<a href="./docs/versions.txt" target="_blank" class="menuLink">Pathomod  - Last</a>' );
+
+$( "#partyButton" ).replaceWith( '<span>Empty </span><i class="material-icons" style="font-size:30px;vertical-align:middle"></i>' );
+
+
+(function() {var css = [
+	"div#adCard, ",
+	"  #twitterFollow, ",
+	"  #youtubeFollow,https://www.youtube.com/channel/UCxvAw8FOtMdZxYX3GcK7mVw?view_as=subscriber ",
+	"  #downloadButtonContainer, ",
+	"  #followText, ",
+	"  #promoImg {",
+	"    display: none;",
+	"  }",
+	"",
+	"  #featuredYoutube > a.ytLink, ",
+	"  a {",
+	"    color: #ff0000 !important;",
+	"    font-size: 20px;",
+	"    margin-top: 0px;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  a:hover {",
+	"    color: #cc0000 !important;",
+	"  }",
+	"",
+	"  #youtuberOf, ",
+	"  #linksContainer2, ",
+	"  .partyWrap {",
+	"    background: rgba(0,0,0,0.6);",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    border-radius: 10px;",
+	"    padding: 10px;",
+	"    font-size: 20px;",
+	"    position: absolute;",
+	"    color: #fff;",
+	"  }",
+	"",
+	"  .partyWrap {",
+	"    min-height: 80px;",
+	"    min-width: 160px;",
+	"    top: 10px;",
+	"    right: 10px;",
+	"  }",
+	"",
+	"  #youtuberOf {",
+	"    top: 10px;",
+	"    left: 10px;",
+	"  }",
+	"",
+	"  #followText {",
+	"    min-height: 200px;",
+	"    bottom: 10px;",
+	"    left: 10px;",
+	"  }",
+	"",
+	"  #linksContainer2 {",
+	"    bottom: 10px;",
+	"    right: 10px;",
+	"    color: transparent;",
+	"  }",
+	"",
+	"  .menuCard {",
+	"    background: rgba(0,0,0,0.6);",
+	"    border-radius: 10px;",
+	"    border: 10px solid rgba(0,0,0,0.9);",
+	"    box-shadow: none;",
+	"    overflow:auto;",
+	"  }",
+	"",
+	"  ::-webkit-scrollbar {",
+	"    width: 10px;",
+	"    border-right: 2px solid #ff0000;",
+	"  }",
+	"",
+	"  ::-webkit-scrollbar-thumb {",
+	"    border: 2px solid #ff0000;",
+	"  }",
+	"",
+	"  ::-webkit-scrollbar-thumb:hover {",
+	"    background: #ff0000;",
+	"  }",
+	"",
+	"  ::-webkit-scrollbar-thumb:active {",
+	"    background: black;",
+	"    border: 2px solid #ff0000;",
+	"  }",
+	"",
+	"  .menuHeader {",
+	"    font-size: 24px;",
+	"    color: #eeeeee;",
+	"    margin-bottom: 3px;",
+	"    border-bottom: 3px solid #eee;",
+	"  }",
+	"",
+	"  .menuHeader:first-child {",
+	"    margin-bottom: 30px;",
+	"  }",
+	"",
+	"  .menuText {",
+	"    font-size: 18px;",
+	"    color: #ccc;",
+	"    margin-bottom: 10px;",
+	"  }",
+	"",
+	"  .ytLink {",
+	"    color: #ff0000;",
+	"    font-size: 24px;",
+	"    text-decoration: none;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  .menuButton {",
+	"    color: #fff;",
+	"    background-color: transparent;",
+	"    border: 5px solid #ff0000;",
+	"    position: relative;",
+	"    display: inline-flex;",
+	"    padding: 0px 70px;",
+	"    font-family: denk one;",
+	"    transition: color .5s;",
+	"    overflow: hidden;",
+	"    width: 100%;",
+	"    justify-content: center;",
+	"  }",
+	"",
+	"  .menuButton:hover {",
+	"    color: #FFFFFF !important;",
+	"    border: 5px solid #ff0000;",
+	"    cursor: pointer;",
+	"    background-color: transparent;",
+	"  }",
+	"",
+	"  .menuButton:before {",
+	"    content: \'\';",
+	"    position: absolute;",
+	"    top: 0;",
+	"    left: 0;",
+	"    width: 130%; ",
+	"    height: 10000%;",
+	"    background: #ff0000;",
+	"    border-right: 20px solid #b6fe9c;",
+	"    z-index: -1;",
+	"    transform-origin:0 0 ;",
+	"    transform:translateX(-112%) skewX(45deg);",
+	"    transition: transform .5s;",
+	"  }",
+	"",
+	"  .menuButton:hover:before {",
+	"    color: #FFFFFF !important;",
+	"    transform: translateX(-20%) skewX(45deg);",
+	"  }",
+	"",
+	"  .menuCard span {",
+	"    margin: 10px;",
+	"  }",
+	"",
+	"  #promoHolderImg > img {",
+	"    width: 300px;",
+	"    height: 94px;",
+	"  }",
+	"",
+	"  #guideCard {",
+	"    max-height: 282px;",
+	"  }",
+	"",
+	"  .skinColorItem {",
+	"    transition: 1s;",
+	"    border: 3px solid #000;",
+	"  }",
+	"",
+	"  select {",
+	"    background: #cc0000;",
+	"    border-radius: 5px;",
+	"    border: 3px solid #ff0000;",
+	"    margin-bottom: 10px;",
+	"    color: #fff;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  select:hover {",
+	"    background: #ff0000;",
+	"    border: 3px solid #cc0000;",
+	"  }",
+	"",
+	"  #pre-content-container {",
+	"    display: none!important;",
+	"  }",
+	"",
+	"  .uiElement, ",
+	"  .resourceDisplay, ",
+	"  .actionBarItem {",
+	"    background-color: rgba(0,0,0,0.6) !important;",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    border-radius: 50px !important;",
+	"    color: #ff0000;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  .uiElement:hover, ",
+	"  .resourceDisplay:hover, ",
+	"  .actionBarItem:hover {",
+	"    background-color: rgba(0,0,0,0.5) !important;",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    border-radius: 50px !important;",
+	"    color: #ff0000;",
+	"  }",
+	"",
+	"  #topInfoHolder, #itemInfoHolder, #mapDisplay, #chatBox  { ",
+	"    background-color: rgba(0,0,0,0.6) !important;",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    border-radius: 10px !important;",
+	"    color: #ff0000;",
+	"  }",
+	"",
+	"  #itemInfoHolder { ",
+	"    -webkit-text-stroke: transparent;",
+	"  }",
+	"",
+	"  .material-icons { ",
+	"    color: #ff0000;",
+	"    font-size: 31px;",
+	"    -webkit-text-stroke: 1.5px #fff;",
+	"  }",
+	"",
+	"  #altServer > a > i {",
+	"    font-size: 30px !important;",
+	"    -webkit-text-stroke: transparent !important;",
+	"  }",
+	"",
+	"  #ageText { ",
+	"    font-size: 40px !important;",
+	"    color: #ff0000;",
+	"    -webkit-text-stroke: 1.5px #fff;",
+	"    margin-bottom: 30px;",
+	"  }",
+	"",
+	"  #ageBarBody {",
+	"    background-color: #ff0000;",
+	"    border: 3px solid #fff",
+	"  }",
+	"",
+	"  #ageBar {",
+	"    background-color: rgba(0,0,0,0.6) !important;",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    height: 10px;",
+	"    padding-bottom: 10px;",
+	"    margin-bottom: 20px;",
+	"  }",
+	"",
+	"  .actionBarItem {",
+	"    width: 65px;",
+	"    height: 65px;",
+	"    background-position: center; ",
+	"    background-size: 55px 55px;",
+	"  }",
+	"",
+	"  #aBox {",
+	"    color: #ff0000!important;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  #chatBox::placeholder {",
+	"    color: #ff0000!important;",
+	"  }",
+	"",
+	"  #chatBox:hover {",
+	"    background: rgba(0,0,0,0.5)!important;",
+	"  }",
+	"",
+	"  #chatBox:hover::placeholder {",
+	"    color: #fc9f9f!important;",
+	"  }",
+	"",
+	"  #leaderboard, .leaderboardItem[style*=\"color: rgb(255, 255, 255);\"] {",
+	"    color: #ff0000!important;",
+	"  }",
+	"",
+	"  .ytLink:hover {",
+	"    color: #cc0000;",
+	"  }",
+	"",
+	"  #nameInput {",
+	"    background: #fff;",
+	"    border: 5px solid #ff0000;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  #nameInput::placeholder {",
+	"    color: #ff0000;",
+	"    transition: 0.5s;",
+	"  }",
+	"",
+	"  #nameInput:hover {",
+	"    background: #ff0000;",
+	"    color: #fff;",
+	"  }",
+	"",
+	"  #nameInput:hover::placeholder {",
+	"    background: #ff0000;",
+	"    color: #fff;",
+	"  }",
+	"",
+	"  #linksContainer2 {",
+	"    max-height: 500px;",
+	"    width: 250px;",
+	"  }",
+	"",
+	"  #linksContainer2 > * {",
+	"    display:table-cell;",
+	"    vertical-align:middle;",
+	"    text-align: center;",
+	"    width:700px;",
+	"  }",
+	"  ",
+	"  .storeTab, ",
+	"  #storeHolder, ",
+	"  #allianceHolder, ",
+	"  #allianceInput, ",
+	"  .allianceButtonM {",
+	"    background: rgba(0,0,0,0.6);",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"  }",
+	"",
+	"  .storeItem, ",
+	"  .storeTab, ",
+	"  .allianceButtonM, ",
+	"  #allianceInput::placeholder, ",
+	"  .allianceItem {",
+	"    color: #ff0000 !important;",
+	"  }",
+	"",
+	"  .storeItem, ",
+	"  .storeTab, ",
+	"  .allianceButtonM, ",
+	"  #allianceInput::placeholder, ",
+	"  .allianceItem, ",
+	"  .joinAlBtn {",
+	"    color: #ff0000 !important;",
+	"  }",
+	"",
+	"  .storeItem:hover, ",
+	"  .storeTab:hover, ",
+	"  .allianceButtonM:hover,",
+	"  .allianceItem:hover, ",
+	"  .joinAlBtn:hover {",
+	"    color: #fc9f9f !important;",
+	"  }",
+	"",
+	"  #allianceInput, ",
+	"  #killCounter {",
+	"    color: #ff0000;",
+	"  }",
+	"  ",
+	"  #allianceInput:hover {",
+	"    background: rgba(0,0,0,0.5);",
+	"    color: #fc9f9f;",
+	"  }",
+	"",
+	"  #allianceInput:hover::placeholder{",
+	"    color: #fc9f9f;",
+	"  }",
+	"",
+	"  #linksContainer2 > *:first-child {",
+	"    border-bottom: 3px solid #ff0000;",
+	"  }",
+	"",
+	"  #moddedMenu {",
+	"    position: absolute;",
+	"    top: 3.25%;",
+	"    left: 0px;",
+	"    width: 3%;",
+	"    height: 45.0%;",
+	"    background: rgba(0,0,0,0.6);",
+	"    border: 3px solid rgba(0,0,0,0.9);",
+	"    border-top-right-radius: 30px;",
+	"    border-bottom-right-radius: 30px;",
+	"    transition: 1s;",
+	"    z-index: 999;",
+	"  }",
+	"",
+	"  #moddedMenu:hover {",
+	"    width: 20%;",
+	"  }",
+	"",
+	"  #youtuberOf {",
+	"    bottom: 10px;",
+	"    top: auto;",
+	"  }",
+	"",
+	"  .titleMM {",
+	"    color: #ff0000;",
+	"    border-bottom: 3px solid #ff0000;",
+	"    font-size: 32px;",
+	"    transform: rotate(90deg);",
+	"    white-space: nowrap;",
+	"    margin-top: 250%;",
+	"    transition: 1s;",
+	"  }",
+	"",
+	"  #moddedMenu:hover > .titleMM {",
+	"    transform: rotate(0deg) translate(0,-1580%)",
+	"  }",
+	"",
+	"  .switch {",
+	"    margin-top: 5px;",
+	"    margin-left: 10px;",
+	"    position: absolute;",
+	"    width: 60px;",
+	"    height: 34px;",
+	"    transition: opacity 1s;",
+	"    opacity: 0;",
+	"  }",
+	"",
+	"  .text {",
+	"    bottom: 76%;",
+	"    position: absolute;",
+	"    color: #eee;",
+	"    font-size: 20px;",
+	"    left: 0%;",
+	"    display: none;",
+	"    transition: 1s;",
+	"  }",
+	"",
+	"  .text > b { ",
+	"    font-size: 20px;",
+	"    color: #ff0000;",
+	"  }",
+	"",
+	"  b:hover { ",
+	"    color: #fc9f9f;",
+	"  }",
+	"",
+	"  .one > .text {",
+	"    top: 5.5%;",
+	"  }",
+	"",
+	"  .two > .text {",
+	"    top: 10.7%;",
+	"  }",
+	"",
+	"  .three > .text {",
+	"    top: 37.5%;",
+	"  }",
+	"",
+	"  .four > .text {",
+	"    top: 47.5%;",
+	"  }",
+	"",
+	"  .five > .text {",
+	"    top: 57.5%;",
+	"  }",
+	"",
+	"  .six > .text {",
+	"    top: 67.5%;",
+	"  }",
+	"",
+	"  .seven > .text {",
+	"    top: 77.5%;",
+	"  }",
+	"",
+	"  .eight > .text {",
+	"    top: 87.5%;",
+	"  }",
+	"",
+	"  #moddedMenu:hover .switch {",
+	"    opacity: 1;",
+	"  }",
+	"",
+	"  #moddedMenu:hover .text {",
+	"    display: block;",
+	"  }",
+	"",
+	"  .one > .switch {",
+	"    top: 15%;",
+	"  }",
+	"",
+	"  .two > .switch {",
+	"    top: 25%;",
+	"  }",
+	"",
+	"  .three > .switch {",
+	"    top: 35%;",
+	"  }",
+	"",
+	"  .four > .switch {",
+	"    top: 45%;",
+	"  }",
+	"",
+	"  .five > .switch {",
+	"    top: 55%;",
+	"  }",
+	"",
+	"  .six > .switch {",
+	"    top: 65%;",
+	"  }",
+	"",
+	"  .seven > .switch {",
+	"    top: 75%;",
+	"  }",
+	"",
+	"  .eight > .switch {",
+	"    top: 85%;",
+	"  }",
+	"",
+	"  .switch input {",
+	"    display:none;",
+	"  }",
+	"",
+	"  .slider {",
+	"    position: absolute;",
+	"    cursor: pointer;",
+	"    top: 0;",
+	"    left: 0;",
+	"    right: 0;",
+	"    bottom: 0;",
+	"    background-color: #888;",
+	"    -webkit-transition: .4s;",
+	"    transition: .4s;",
+	"  }",
+	"",
+	"  .slider:before {",
+	"    position: absolute;",
+	"    content: \"\";",
+	"    height: 26px;",
+	"    width: 26px;",
+	"    left: 4px;",
+	"    bottom: 4px;",
+	"    background-color: white;",
+	"    -webkit-transition: .4s;",
+	"    transition: .4s;",
+	"  }",
+	"",
+	"  input:checked + .slider {",
+	"    background-color: #ff0000;",
+	"  }",
+	"  ",
+	"  input:focus + .slider {",
+	"    box-shadow: 0 0 1px #ff0000;",
+	"  }",
+	"",
+	"  input:checked + .slider:before {",
+	"    -webkit-transform: translateX(26px);",
+	"    -ms-transform: translateX(26px);",
+	"    transform: translateX(26px);",
+	"  }",
+	"",
+	"  .slider.round {",
+	"    border-radius: 34px;",
+	"  }",
+	"",
+	"  .slider.round:before {",
+	"    border-radius: 50%;",
+	"  }"
+].join("\n");
+if (typeof GM_addStyle != "undefined") {
+	GM_addStyle(css);
+} else if (typeof PRO_addStyle != "undefined") {
+	PRO_addStyle(css);
+} else if (typeof addStyle != "undefined") {
+	addStyle(css);
+} else {
+	var node = document.createElement("style");
+	node.type = "text/css";
+	node.appendChild(document.createTextNode(css));
+	var heads = document.getElementsByTagName("head");
+	if (heads.length > 0) {
+		heads[0].appendChild(node);
+	} else {
+		// no head yet, stick it whereever
+		document.documentElement.appendChild(node);
+	}
+}
+})();
+$("#consentBlock").css({display: "none"});
+//$("#youtuberOf").css({display: "none"});
+
+window.history.replaceState = () => {};
+window.history.pushState = () => {};
+
+const force = getParam("force-connect", window.location.search);
+const party = getParam("server", window.location.search);
+const ip = /\d+:\d+:\d+/.exec(party);
+
+
+WebSocket = class extends WebSocket {
+    constructor(...args){
+        if (force !== null && /\d+:\d+:\d+/.test(force)){
+            const allServers = [];
+            const servers = window.vultr.servers;
+            let len = servers.length;
+            let server;
+            let games;
+            let gameLen;
+            while (len--) {
+                server = servers[len];
+                games = server.games;
+                gameLen = games.length;
+                while (gameLen--) {
+                    allServers.push({id: `${server.region}:${server.index}:${gameLen}`, ip: server.ip, gameIndex: gameLen});
+                }
+            }
+            const s = (function (id) {
+                let len = allServers.length;
+                while (len--) {
+                    if (allServers[len].id === id) return allServers[len];
+                }
+                return false;
+            })(force);
+            args[0] = args[0].replace(/ip_[a-z0-9]+/, `ip_${s.ip}`).replace(/\?gameIndex=\d+/, `?gameIndex=${s.gameIndex}`);
+        }
+        super(...args);
+    }
+};
+
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+console.log("MooMoo.io modded UI");
+
+(function(){
+
+addEventListener("click", function(e) { // changes the 'reload' button
+    if (e.target.tagName == "A" && e.target.href == "javascript:window.location.href=window.location.href") {
+        e.preventDefault();
+        location.replace(location.origin);
+    }
+});
+
+var sI = -1,
+    hideAct = false;
+
+function $(e){
+    var a = document.querySelectorAll(e);
+    if(a.length == 1){
+        return a[0];
+    } else if(a.length == 0){
+        return null;
+    } else {
+        return a;
+    }
+    return a;
+}
+
+function getCookie(e){
+    var c = document.cookie, g;
+    c=c.split('; ');
+    c.forEach(function(ob){
+        var f=ob.split('=');
+        if(f[0]==e){
+            g=f[1];
+            return;
+        }
+        return;
+    }
+             );
+    if(g!==undefined){
+        return g;
+    }else{
+        return null;
+    }
+}
+
+function resetInterval() {
+    clearInterval(sI);
+
+    if(hideAct){
+        $("#mainMenu").classList.remove("hide");
+        hideAct = false;
+    }
+    sI = setInterval(function(){
+        hideActionMenu();
+    }, 10e3);
+}
+
+function hideActionMenu() {
+    hideAct = true;
+    $("#mainMenu").classList.add("hide");
+}
+
+addEventListener("mousemove", function(){
+    resetInterval();
+});
+addEventListener("keydown", function() {
+    resetInterval();
+});
+document.body.addEventListener("focus", function() {
+    resetInterval();
+});
+addEventListener("blur", function() {
+    hideActionMenu();
+});
+
+Array.prototype.remove = function(){
+    for(let i of this){
+        i.remove();
+    }
+};
+
+Element.prototype.remove = function(){
+    this.parentElement.removeChild(this);
+};
+
+window.Worker = null;
+
+addEventListener("load", function(){
+    [$("#youtuberOf"), $("#adCard"), $("#followText"), $("#youtubeFollow"), $("#twitterFollow"), $(".menuCard[style='width:728px;display:inline-block;margin-top:10px;padding:10px;']")].remove();
+    $("#promoImgHolder").innerHTML = "";
+    {
+        let a = [$("#serverBrowser"), $("#altServer")];
+        for (var i = 0; i < a.length; i++) {
+            $("#promoImgHolder").appendChild(a[i]);
+        }
+    }
+    {
+        let settings = $(".settingRadio"),
+            parent = document.createElement("div");
+
+        parent.classList.add("settings", "menuCard");
+        parent.addEventListener("click", function(e) {
+            if (e.target == this) { // prevent closing if user clicked settings
+                this.classList.toggle("show");
+            }
+        });
+
+        for (let i of settings) {
+            parent.appendChild(i);
+        }
+
+        $("#menuCardHolder").children[0].appendChild(parent);
+    }
+    {
+        let b = $("#skinColorHolder");
+        $("#promoImgHolder").appendChild(b);
+        $("#rightCardHolder").remove();
+    }
+    {
+        if(localStorage.tampermonkeyMoomooChangelogSave){
+            if(localStorage.tampermonkeyMoomooChangelogSave == a.innerText){
+                a.parentElement.style.opacity = .5;
+            } else {
+                a.style.fontSize = "5em";
+                a.addEventListener("click", function(){
+                    localStorage.tampermonkeyMoomooChangelogSave = a.innerText;
+                    a.style.fontSize = "1em";
+                    a.parentElement.style.opacity = .5;
+                });
+            }
+        } else {
+            localStorage.tampermonkeyMoomooChangelogSave = a.innerText;
+        }
+    }
+    {
+        // custom css!
+        let e = document.createElement("style");
+        e.innerHTML = `
+
+`;
+        document.head.appendChild(e);
+    }
+});
+
+}());
+
+try {
+    window.admob = {
+        requestInterstitialAd: ()=>{},
+        showInterstitialAd: ()=>{}
+    }
+} catch (e) {
+    console.warn(e)
+}
+$('#mapDisplay').css({
+        'background': 'url("https://tse4.mm.bing.net/th?id=OIP.mS1fBWlwobEuLLEb2WDy8AHaEo&pid=Api&P=0&w=288&h=181")'
+    });
+
+
+
+
+$('#subConfirmationElement').click( () => {
+    window.follmoo();
+    localStorage["Subbed"] = true;
+});
+
+$("#youtuberOf").remove();
+$("#followText").remove();
+$("#twitterFollow").remove();
+$("#youtubeFollow").remove();
+$("#adCard").remove();
+$("#mobileInstructions").remove();
+$("#downloadButtonContainer").remove();
+$("#mobileDownloadButtonContainer").remove();
+$(".downloadBadge").remove();
+
+var autoreloadloop;
+var autoreloadenough = 0;
+
+autoreloadloop = setInterval(function () {
+    if (autoreloadenough < 200) {
+        document.title = "MajoRMoD";
+        if (document.getElementById("loadingText").innerHTML == `disconnected<a href="javascript:window.location.href=window.location.href" class="ytLink">reload</a>`) {
+          document.title = "AutoReload:Working";
+            clearInterval(autoreloadloop);
+            setTimeout(function () {document.title = "Moo Moo";}, 1000)
+            location.reload();
+        }
+        autoreloadenough++;
+    }
+    else if (autoreloadenough >= 300) {
+        clearInterval(autoreloadloop);
+        document.title = "AutoReloader Done";
+        setTimeout(function () {document.title = "Moo Moo";}, 1000)
+    }
+}, 50);
+
+$("#consentBlock").css({display: "none"});
+//$("#youtuberOf").css({display: "none"});
+
+document.getElementById("moomooio_728x90_home").style.display = "none";
+$("#moomooio_728x90_home").parent().css({display: "none"});
+
+window.onbeforeunload = null;
+
+let mouseX;
+let mouseY;
+
+let width;
+let height;
+setInterval(() => {
+   if(clanToggle == 1) {
+        doNewSend(["9", [null]]);
+        doNewSend(["8", [animate(false, 5)]])
+           doNewSend(["9", [null]]);
+    }
+    doNewSend(["testing", [6]]);
+}, 0);
+
+setInterval(() => {
+    if(messageToggle == 1) {
+        doNewSend(["ch", [animate(true, 5)]])
+    }
+}, 200);
+
+setInterval(() => {
+    if(autoaim == true) {
+        doNewSend(["2", [nearestEnemyAngle]]);
+    }
+}, 0);
+
+ setInterval(() => {
+    if(hatToggle == 1) {
+        if(oldHat != normalHat) {
+            hat(normalHat);
+            console.log("Tried. - Hat")
+        }
+        if(oldAcc != normalAcc) {
+            acc(normalAcc);
+            console.log("Tried. - Acc")
+        }
+        oldHat = normalHat;
+        oldAcc = normalAcc
+    }
+}, 25);
+
+function normal() {
+    hat(normalHat);
+    acc(normalAcc);
+}
+
+
+function aim(x, y){
+     var cvs = document.getElementById("gameCanvas");
+     cvs.dispatchEvent(new MouseEvent("mousemove", {
+         clientX: x,
+         clientY: y
+
+     }));
+}
+
+let coreURL = new URL(window.location.href);
+window.sessionStorage.force = coreURL.searchParams.get("fc");
+
+var nearestEnemy;
+var nearestEnemyAngle;
+var isEnemyNear;
+var instaSpeed = 230;
+var primary;
+var secondary;
+var foodType;
+var wallType;
+var spikeType;
+var millType;
+var mineType;
+var boostType;
+var turretType;
+var spawnpadType;
+var autoaim = false;
+var tick = 1;
+var oldHat;
+var oldAcc;
+var enemiesNear;
+var normalHat;
+var normalAcc;
+var ws;
+var msgpack5 = msgpack;
+var boostDir;
+let myPlayer = {
+    id: null,
+    x: null,
+    y: null,
+    dir: null,
+    object: null,
+    weapon: null,
+    clan: null,
+    isLeader: null,
+    hat: null,
+    accessory: null,
+    isSkull: null
+};
+
+let healSpeed = 90;
+var messageToggle = 0;
+var clanToggle = 0;
+let healToggle = 1;
+let hatToggle = 1;
+
+document.msgpack = msgpack;
+function n(){
+     this.buffer = new Uint8Array([0]);
+     this.buffer.__proto__ = new Uint8Array;
+     this.type = 0;
+}
+
+WebSocket.prototype.oldSend = WebSocket.prototype.send;
+WebSocket.prototype.send = function(m){
+    if (!ws){
+        document.ws = this;
+
+        ws = this;
+        socketFound(this);
+    }
+    this.oldSend(m);
+};
+
+
+function socketFound(socket){
+    socket.addEventListener('message', function(message){
+        handleMessage(message);
+    });
+}
+
+function handleMessage(m){
+    let temp = msgpack5.decode(new Uint8Array(m.data));
+    let data;
+    if(temp.length > 1) {
+        data = [temp[0], ...temp[1]];
+        if (data[1] instanceof Array){
+            data = data;
+        }
+    } else {
+      data = temp;
+    }
+    let item = data[0];
+    if(!data) {return};
+
+    if(item === "io-init") {
+            let cvs = document.getElementById("gameCanvas");
+            width = cvs.clientWidth;
+            height = cvs.clientHeight;
+            $(window).resize(function() {
+                width = cvs.clientWidth;
+                height = cvs.clientHeight;
+            });
+            cvs.addEventListener("mousemove", e => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+        }
+
+    if (item == "1" && myPlayer.id == null){
+        myPlayer.id = data[1];
+    }
+
+    if (item == "33") {
+        enemiesNear = [];
+        for(let i = 0; i < data[1].length / 13; i++) {
+            let playerInfo = data[1].slice(13*i, 13*i+13);
+            if(playerInfo[0] == myPlayer.id) {
+                myPlayer.x = playerInfo[1];
+                myPlayer.y = playerInfo[2];
+                myPlayer.dir = playerInfo[3];
+                myPlayer.object = playerInfo[4];
+                myPlayer.weapon = playerInfo[5];
+                myPlayer.clan = playerInfo[7];
+                myPlayer.isLeader = playerInfo[8];
+                myPlayer.hat = playerInfo[9];
+                myPlayer.accessory = playerInfo[10];
+                myPlayer.isSkull = playerInfo[11];
+            } else if(playerInfo[7] != myPlayer.clan || playerInfo[7] === null) {
+                enemiesNear.push(playerInfo);
+            }
+        }
+    }
+
+    isEnemyNear = false;
+    if(enemiesNear) {
+        nearestEnemy = enemiesNear.sort((a,b) => dist(a, myPlayer) - dist(b, myPlayer))[0];
+    }
+
+    if(nearestEnemy) {
+        nearestEnemyAngle = Math.atan2(nearestEnemy[2]-myPlayer.y, nearestEnemy[1]-myPlayer.x);
+        if(Math.sqrt(Math.pow((myPlayer.y-nearestEnemy[2]), 2) + Math.pow((myPlayer.x-nearestEnemy[1]), 2)) < 300) {
+            isEnemyNear = true;
+            if(autoaim == false && myPlayer.hat != 7 && myPlayer.hat != 53) {
+                normalHat = 6;
+                if(primary != 8) {
+                    normalAcc = 21
+                }
+            };
+        }
+    }
+    if(isEnemyNear == false && autoaim == false) {
+        normalAcc = 11;
+        if (myPlayer.y < 2400){
+            normalHat = 15;
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+            normalHat = 31;
+        } else {
+	        normalHat = 12;
+        }
+    }
+    if (!nearestEnemy) {
+        nearestEnemyAngle = myPlayer.dir;
+    }
+    if(item == "h" && data[1] == myPlayer.id) {
+        if(data[2] < 100 && data[2] > 0 && healToggle == 1) {
+            setTimeout( () => {
+                place(foodType, null);
+            }, healSpeed);
+
+        }
+    }
+    update();
+}
+
+
+function doNewSend(sender){
+    ws.send(new Uint8Array(Array.from(msgpack5.encode(sender))));
+}
+
+function acc(id) {
+    doNewSend(["13c", [0, 0, 1]]);
+    doNewSend(["13c", [0, id, 1]]);
+}
+
+function hat(id) {
+    doNewSend(["13c", [0, id, 0]]);
+}
+
+
+function place(id, angle = Math.atan2(mouseY - height / 2, mouseX - width / 2)) {
+    doNewSend(["5", [id, null]]);
+    doNewSend(["c", [1, angle]]);
+    doNewSend(["c", [0, angle]]);
+    doNewSend(["5", [myPlayer.weapon, true]]);
+}
+
+function boostSpike() {
+    if(boostDir == null) {
+        boostDir = nearestEnemyAngle;
+    }
+    place(spikeType, boostDir + toRad(90));
+    place(spikeType, boostDir - toRad(90));
+    place(boostType, boostDir);
+    doNewSend(["33", [boostDir]]);
+}
+
+
+var repeater = function(key, action, interval) {
+    let _isKeyDown = false;
+    let _intervalId = undefined;
+
+    return {
+        start(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = true;
+                if(_intervalId === undefined) {
+                    _intervalId = setInterval(() => {
+                        action();
+                        if(!_isKeyDown){
+                            clearInterval(_intervalId);
+                            _intervalId = undefined;
+                            console.log("[INFO]Claered");
+                        }
+                    }, interval);
+                }
+            }
+        },
+
+        stop(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = false;
+            }
+        }
+    };
+}
+
+const healer = repeater(81, () => {place(foodType)}, 0);
+const boostPlacer = repeater(70, () => {place(boostType)}, 0);
+const spikePlacer = repeater(86, () => {place(spikeType)}, 0);
+const millPlacer = repeater(78, () => {place(millType)}, 0);
+const turretPlacer = repeater(72, () => {place(turretType)}, 0);
+const boostSpiker = repeater(71, boostSpike, 0);
+const wallPlacer = repeater(52, () => {place(wallType)}, 0);
+
+function getRandom(min,max){
+    return Math.floor(Math.random()*max)+min;
+};
+
+document.addEventListener('keydown', (e)=>{
+    spikePlacer.start(e.keyCode);
+    healer.start(e.keyCode);
+    boostPlacer.start(e.keyCode);
+    boostSpiker.start(e.keyCode);
+    millPlacer.start(e.keyCode);
+    turretPlacer.start(e.keyCode);
+    wallPlacer.start(e.keyCode);
+
+   if(e.keyCode == 87 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", [" ."]]);
+    }
+    if(e.keyCode == 65 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", [".."]]);
+    }
+    if(e.keyCode == 83 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["..."]]);
+    }
+    if(e.keyCode == 68 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["...."]]);
+    }
+    if(e.keyCode == 81 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["NoDie Mod:On"]]);
+    }
+    if(e.keyCode == 82 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["MajoR SmasH  "]]);
+    }
+    if(e.keyCode == 70 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", [";-;"]]);
+    }
+    if(e.keyCode == 86 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Spike:On"]]);
+    }
+    if(e.keyCode == 67 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SoldierHat:ON"]]);
+    }
+    if(e.keyCode == 90 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["TankHat:ON"]]);
+    }
+    if(e.keyCode == 66 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["BullHat:ON"]]);
+    }
+    if(e.keyCode == 84 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["TurretHat:ON"]]);
+    }
+    if(e.keyCode == 89 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SpikeHat:ON"]]);
+    }
+    if(e.keyCode == 85 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["PlagueHat:ON"]]);
+    }
+    if(e.keyCode == 9 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["MajoR PoWeR:ON"]]);
+    }
+    if(e.keyCode == 74 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SamuraiHat:ON"]]);
+    }
+    if(e.keyCode == 75 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["EmpHat:ON"]]);
+    }
+    if(e.keyCode == 192 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SoldierTail:ON"]]);
+    }
+    if(e.keyCode == 8 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Cow:ON"]]);
+    }
+    if(e.keyCode == 221 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Pig:ON"]]);
+    }
+    if(e.keyCode == 190 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["MajoR :O  :)"]]);
+    }
+    if(e.keyCode == 76 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["ByeeNoob [eZ]"]]);
+    }
+    if(e.keyCode == 80 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["U ded :>"]]);
+    }
+    if(e.keyCode == 79 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SubToMajoR"]]);
+    }
+    if(e.keyCode == 16 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["AutoHat:ON"]]);
+    }
+    if(e.keyCode == 52 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", [" Wall:ON"]]);
+    }
+    if(e.keyCode == 56 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Turret:ON"]]);
+    }
+    if(e.keyCode == 71 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["U Ready? Ok Lets Goo"]]);
+    }
+    if(e.keyCode == 72 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", [";-;"]]);
+    }
+    if(e.keyCode == 78 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["WidnMill:ON"]]);
+    }
+    if(e.keyCode == 18 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["3Windmill:ON"]]);
+    }
+    if(e.keyCode == 49 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Katana:ON"]]);
+    }
+    if(e.keyCode == 50 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["Musket:ON"]]);
+    }
+    if(e.keyCode == 32 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["SPIKED NOOB!"]]);
+    }
+    if(e.keyCode == 32 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        place(spikeType, myPlayer.dir + toRad(45));
+        place(spikeType, myPlayer.dir - toRad(45));
+        doNewSend(["c", [1]]);
+
+        setTimeout( () => {
+            doNewSend(["13c", [0, 53, 0]]);
+        }, 100);
+
+        setTimeout( () => {
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            autoaim = false;
+        }, 200);
+    }
+    if (e.keyCode == 80 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        for (let i=0;i<5;i++){
+             let angle = myPlayer.dir + toRad(i * 72);
+             place(millType, angle)
+        }
+    }
+    if (e.keyCode == 56 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        for (let i=0;i<4;i++){
+             let angle = myPlayer.dir + toRad(i * 90);
+             place(turretType, angle)
+        }
+    }
+    if (e.keyCode == 79 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        for (let i=0;i<4;i++){
+             let angle = myPlayer.dir + toRad(i * 90);
+             place(boostType, angle)
+        }
+    }
+    if (e.keyCode == 76 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        for (let i=0;i<4;i++){
+             let angle = myPlayer.dir + toRad(i * 90);
+             place(spikeType, angle)
+        }
+    }
+    if (e.keyCode == 72 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        place(turretType, myPlayer.dir + toRad(45));
+        place(turretType, myPlayer.dir - toRad(45));
+    }
+       if (e.keyCode == 18 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+       place(millType, myPlayer.dir + toRad(90));
+       place(millType, myPlayer.dir + toRad(270));
+       place(millType, myPlayer.dir + toRad(0));
+   }
+
+    if (e.keyCode == 16 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        if (myPlayer.y < 2400){
+            hat(15);
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+            hat(31);
+        } else {
+	        hat(12);
+        }
+        acc(11);
+ }
+
+    if (e.keyCode == 188 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        acc(21);
+    }
+    if (e.keyCode == 67 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(6)
+        acc(16);
+    }
+    if (e.keyCode == 90 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(40)
+        acc(21);
+    }
+    if (e.keyCode == 66 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(7)
+        acc(18);
+    }
+    if (e.keyCode == 84 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(53)
+        acc(19);
+    }
+    if (e.keyCode == 89 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(11)
+        acc(21);
+    }
+    if (e.keyCode == 74 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(20)
+        acc(18);
+    }
+    if (e.keyCode == 85 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(21)
+        acc(18);
+    }
+    if (e.keyCode == 75 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(22)
+        acc(19);
+    }
+    if (e.keyCode == 192 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(6)
+        acc(11);
+    }
+    if (e.keyCode == 8 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(28)
+        acc(8);
+    }
+    if (e.keyCode == 221 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hat(29)
+    }
+
+    if(e.keyCode == 82 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        doNewSend(["ch", [spam(true, 5)]])
+        doNewSend(["c", [1]]);
+        setTimeout( () => {
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["5", [secondary, true]]);
+        }, instaSpeed - 130);
+
+        setTimeout( () => {
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            doNewSend(["13c", [0, 11, 1]]);
+            autoaim = false;
+            setTimeout(function(){
+                doNewSend(["5", [secondary, true]]);
+                setTimeout(function(){a=true;doNewSend(["5", [primary, true]]);},stuff.SS+100)
+            },stuff.PS+100);
+        }, instaSpeed);
+    }
+
+
+    if(e.keyCode == 9 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        place(spikeType, myPlayer.dir + toRad(45));
+        place(spikeType, myPlayer.dir - toRad(45));
+        doNewSend(["c", [1]]);
+
+        setTimeout( () => {
+            doNewSend(["13c", [0, 53, 0]]);
+        }, 100);
+
+        setTimeout( () => {
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            autoaim = false;
+        }, 200);
+    }
+
+       if(e.keyCode == 190 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+       autoaim = true;
+       doNewSend(["5", [secondary, true]]);
+       doNewSend(["ch", [spam(true, 5)]])
+           doNewSend(["13c", [0, 32, 0]]);
+           doNewSend(["13c", [0, 21, 1]]);
+       doNewSend(["13c", [0, 53, 0]]);
+       doNewSend(["c", [1]]);
+
+       setTimeout( () => {
+           doNewSend(["13c", [0, 32, 19]]);
+           doNewSend(["13c", [0, 21, 1]]);
+           doNewSend(["13c", [0, 32, 0]]);
+           doNewSend(["6", [12]]);
+
+       }, 100);
+
+       setTimeout( () => {
+           doNewSend(["6", [15]]);
+
+       }, 200);
+
+       setTimeout( () => {
+           doNewSend(["c", [0]]);
+           doNewSend(["5", [primary, true]]);
+           autoaim = false;
+       }, 300);
+   }
+        if(e.keyCode == 191 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["13c", [0, 18, 1]]);
+        doNewSend(["ch", [mes(true, 5)]])
+            doNewSend(["c", [1]]);
+
+        setTimeout( () => {
+            doNewSend(["6", [5]]);
+        }, 100);
+
+        setTimeout( () => {
+            doNewSend(["13c", [0, 53, 0]]);
+            place(spikeType, myPlayer.dir + toRad(0));
+        }, 200);
+
+        setTimeout( () => {
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            doNewSend(["13c", [0, 19, 1]]);
+            autoaim = false;
+        }, 300);
+    }
+
+
+
+    if(e.keyCode == 38 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        messageToggle = (messageToggle + 1) % 2;
+    }
+
+    if(e.keyCode == 37 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+       messagefake = (messagefake + 1) % 2;
+   }
+
+     if(e.keyCode == 39 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+       clanfake = (clanfake + 1) % 2;
+   }
+
+    if(e.keyCode == 40 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        clanToggle = (clanToggle + 1) % 2;
+    }
+
+    if(e.keyCode == 106 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        healToggle = (healToggle + 1) % 2;
+        if(healToggle == 0) {
+            if(hatToggle == 0) {
+                document.title = "Heal: OFF💀 | Hat: OFF💀"
+            } else {
+                document.title = "Heal: OFF💀 | Hat: ON💀"
+            }
+        } else {
+            if(hatToggle == 0) {
+                document.title = "Heal: ON💀 | Hat: OFF💀"
+            } else {
+                document.title = "Heal: ON💀 | Hat: ON💀"
+            }
+        }
+    }
+    if (e.keyCode == 186 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+            if (instaSpeed == 230) {
+                instaSpeed = 190;
+                doNewSend(["ch", ["Insta Speed-230"]]);
+            }else {
+                doNewSend(["ch", ["Insta Speed-270"]]);
+                instaSpeed = 230;
+            }
+    }
+
+        if (e.keyCode == 115 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+            if (autoaim == false) {
+                autoaim = true;
+                doNewSend(["ch", ["MajoRMod / Aim : On"]]);
+            }else {
+                doNewSend(["ch", ["MajoRMod / Aim : Off"]]);
+                autoaim = false;
+
+    }
+    }
+
+    if(e.keyCode == 187 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [secondary, true]]);
+        doNewSend(["13c", [0, 53, 0]]);
+        doNewSend(["c", [1]]);
+
+        setTimeout( () => {
+            doNewSend(["6", [12]]);
+        }, 300);
+
+        setTimeout( () => {
+            doNewSend(["6", [15]]);
+        }, 300);
+
+        setTimeout( () => {
+            doNewSend(["c", [0]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            doNewSend(["5", [primary, true]]);
+            autoaim = false;
+        }, 300);
+    }
+    if(e.keyCode == 188 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["6", [4]]);
+    }
+
+    if(e.keyCode == 190 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["6", [15]]);
+    }
+    if(e.keyCode == 99 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["6", [28]]);
+    }
+    if(e.keyCode == 100 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["6", [25]]);
+    }
+        if(e.keyCode == 111 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        hatToggle = (hatToggle + 1) % 2;
+        if(healToggle == 0) {
+            if(hatToggle == 0) {
+                document.title = "Heal: OFF💀 | Hat: OFF💀"
+            } else {
+                document.title = "Heal: OFF💀 | Hat: ON💀"
+            }
+        } else {
+            if(hatToggle == 0) {
+                document.title = "Heal: ON💀| Hat: OFF💀"
+            } else {
+                document.title = "Heal: ON💀 | Hat: ON💀"
+            }
+        }
+    }
+})
+
+
+
+document.addEventListener('keyup', (e)=>{
+    spikePlacer.stop(e.keyCode);
+    boostPlacer.stop(e.keyCode);
+    boostSpiker.stop(e.keyCode);
+    millPlacer.stop(e.keyCode);
+    turretPlacer.stop(e.keyCode);
+    wallPlacer.stop(e.keyCode);
+    healer.stop(e.keyCode);
+    if(e.keyCode == 71 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        setTimeout( () => {
+            doNewSend(["33", [null]]);
+            boostDir = null;
+        }, 10);
+    }
+})
+
+
+function isElementVisible(e) {
+    return (e.offsetParent !== null);
+}
+
+
+function toRad(angle) {
+    return angle * 0.01745329251;
+}
+
+function dist(a, b){
+    return Math.sqrt( Math.pow((b.y-a[2]), 2) + Math.pow((b.x-a[1]), 2) );
+}
+
+
+function spam(space, chance) {
+    let result = '';
+    let characters;
+    if(space) {
+        characters = '';
+    }
+    if(space) {
+        characters = characters.padStart((30 - characters.length) / 2 + characters.length)
+        characters = characters.padEnd(30);
+    }
+    let count = 0;
+    for (let i = 0; i < characters.length; i++ ) {
+       if(Math.floor(Math.random() * chance) == 0 && characters.charAt(i) != "-" && count < 0 && characters.charAt(i) != " ") {
+           result += "";
+           count++
+       } else {
+           result += characters.charAt(i);
+       }
+    }
+    return result;
+}
+
+
+function animate(space, chance) {
+    let result = '';
+    let characters;
+    if(space) {
+        characters = 'MajoR İs KinG';
+    } else {
+        characters = 'MajoR Mod Best';
+    }
+    if(space) {
+        characters = characters.padStart((30 - characters.length) / 2 + characters.length)
+        characters = characters.padEnd(30);
+    }
+    let count = 0;
+    for (let i = 0; i < characters.length; i++ ) {
+       if(Math.floor(Math.random() * chance) == 1 && characters.charAt(i) != "-" && count < 2 && characters.charAt(i) != " ") {
+           result += "";
+           count++
+       } else {
+           result += characters.charAt(i);
+       }
+    }
+    return result;
+}
+function fake(space, chance) {
+   let result = '';
+   let characters;
+   if(space) {
+       characters = 'Pro or Gay?';
+   } else {
+       characters = 'NotGaY';
+   }
+   if(space) {
+       characters = characters.padStart((70 - characters.length) / 6 + characters.length)
+       characters = characters.padEnd(30);
+   }
+   let count = 0;
+   for (let i = 0; i < characters.length; i++ ) {
+      if(Math.floor(Math.random() * chance) == 1 && characters.charAt(i) != "-" && count < 6 && characters.charAt(i) != " ") {
+          result += "";
+          count++
+      } else {
+          result += characters.charAt(i);
+      }
+   }
+   return result;
+}
+
+document.title = "Moo Moo"
+
+function update() {
+    for (let i=0;i<9;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            primary = i;
+        }
+    }
+
+    for (let i=9;i<16;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            secondary = i;
+        }
+    }
+
+    for (let i=16;i<19;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            foodType = i - 16;
+        }
+    }
+
+    for (let i=19;i<22;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            wallType = i - 16;
+        }
+    }
+
+    for (let i=22;i<26;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            spikeType = i - 16;
+        }
+    }
+
+    for (let i=26;i<29;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            millType = i - 16;
+        }
+    }
+
+    for (let i=29;i<31;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            mineType = i - 16;
+        }
+    }
+
+    for (let i=31;i<33;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            boostType = i - 16;
+        }
+    }
+
+    for (let i=33;i<39;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString())) && i != 36){
+            turretType = i - 16;
+        }
+    }
+
+    spawnpadType = 36;
+}
+
+function letThereBeLight(){
+  if(rANC[0] === 1){
+    rainbowColor();
+  }
+  katie();
+  window.requestAnimationFrame(letThereBeLight);
+}
+
+window.requestAnimationFrame(letThereBeLight);
+
+// <3 Revival
+/*$(window).resize( () => {
+     for (var elem of Object.values(allMooMooObjects)){
+        let mapDisplay = document.getElementById("mapDisplay").getBoundingClientRect();
+            let mapSize = [14365, 14365];
+            let boxSize = [$("#mapDisplay").width(), $("#mapDisplay").height()];
+            let x = mapDisplay.x + parseInt(elem.rawX) - 6;
+            let y = mapDisplay.y + parseInt(elem.rawY) - 6;
+            console.log(x, y);
+            elem.style = `background-image: url("${elem.rimgURL}"); background-size: 12px 12px; width:12px; height:12px; position:absolute; left: ${x}px; top:${y}px; opacity:0; z-index:100; cursor: pointer;`;
+     }
+});*/
+
+// http://keycode.info/
+// https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+
+// ==UserScript==
+// @name        Test hack
+// @namespace    -
+// @version     0.1
+// @author       .
+// @match        *://moomoo.io/*
+// @match        *://sandbox.moomoo.io/*
+// @grant        none
+// ==/UserScript==
+
+function createTribe(name) {
+   leaveTribe();
+   doNewSend(["8", [name]]);
+}
+
+function leaveTribe() {
+   doNewSend(["9", [null]]);
+}
+
+var _msgs = ["Im noob", "Dont bully me pls", "Pls dont kill me", "Im newbie"];
+var msgs = _msgs;
+var msgCycleSwitch = false;
+var shift = false;
+var minus = false;
+var home = false;
+var chat;
+var msgNum = 0;
+
+var socket = null;
+
+var scriptSetup = false;
+
+WebSocket = class extends WebSocket {
+    constructor(...arg) {
+        super(...arg);
+        if (!scriptSetup){
+            scriptSetup = true;
+            styleInit();
+            ren_overlay();
+            window.onbeforeunload = function (){
+                return 'Are you sure you want to leave?';
+            };
+        }
+        socket = this;
+    }
+};
+
+if (storageAvailable('localStorage')){
+   if (!localStorage.getItem("msgs")){
+       localStorage.setItem("msgs", JSON.stringify(msgs));
+   }else{
+       let temp;
+       try{
+           temp = JSON.parse(localStorage.getItem("msgs"));
+       }
+       catch (e){
+           alert("Invalid Array! Setting default...");
+           saveData();
+           temp = "";
+       }
+       if (temp !== ""){
+           msgs = temp;
+       }
+   }
+}
+
+const overlay = {};
+overlay.keyCode = 36;
+overlay.toggle = false;
+overlay.inputString = msgs.join("\n");
+overlay.tempMsgs = _msgs;
+
+function styleInit() {
+    addGlobalStyle(`#chatCyclerUI{padding: 0.2em; margin:0.2em; position: absolute;top: 0;left: 0;width: 30%;
+    background-color: RGB(255, 4, 4);display:none;}`);
+    addGlobalStyle(".table{ display: table; text-align: center; width: 100%; height: 80%;}");
+    addGlobalStyle(".row{ display: table-row; }");
+    addGlobalStyle(`.cell{ display: table-cell; padding: 0px 0.3em;border: 1px solid black;}`);
+    addGlobalStyle(`.backRed{background-color:#FFFF00}`);
+    function addGlobalStyle(css) {
+        var head, style;
+        head = document.getElementsByTagName('head')[0];
+        if (!head) {
+            return;
+        }
+        style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = css;
+        head.appendChild(style);
+    }
+}
+
+function toggleOverlay(tf){
+    if (tf){
+        document.querySelector('#chatCyclerUI').style.display = "block";
+    }else{
+        document.querySelector('#chatCyclerUI').style.display = "none";
+    }
+};
+
+function ren_overlay(){
+    const title = `<div style="font-size:32px;color:rgba(0, 0, 0, 0.75)">Message menu</div>`;
+    const descr = `<div>Press HOME to repeat this menu.</div>`;
+    const body = `
+            <div class="table">
+                <div class="row">Message
+                </div>
+                <div class="row">
+                    <div class="cell" style="vertical-align:middle">Messages</div>
+                    <div class="cell" style="vertical-align:middle"><textarea name="overlay_messages" rows=4 cols=32 style="background-color:rgba(255, 255, 255, 0.35);resize:none;  rgba(255, 255, 255, 0.75) padding-left: 0px;border-left-width: 0px;border-top-width: 0px;padding-top: 0px;padding-right: 0px;border-right-width: 0px;padding-bottom: 0px;border-bottom-width: 0px;"></textarea></div>
+                </div>
+                <div class="row">
+                    <div class="cell" style="vertical-align:middle">Save Message </div>
+                    <div class="cell" style="vertical-align:middle"><input type="button" name="overlay_update_cycle" value="Save"  style="border-right-width: 0px;border-left-width: 0px;border-top-width: 0px;padding-left: 6px;border-bottom-width: 0px;"></div>
+                </div>
+                <br>
+                <div class="row">Repeat Message
+                </div>
+                <div class="row">
+                    <div class="cell" style="vertical-align:middle">Repeat.<br><span class="overlay_cycle_toggle_value"><span style="font-size:24px;color:rgba(0, 0, 0, 0.75)";>Off</span></span></div>
+                    <div class="cell" style="vertical-align:middle"><input type="button" name="overlay_cycle_toggle" value="Repeat"></div>
+                </div>
+            </div>`;
+    const footer = `<div style="font-size:24px;color:rgba(0, 0, 0, 0.75)">Change it u like!</div>`;
+    const temp = `${title} ${body} ${descr} ${footer}`;
+    const d = document.createElement("div")
+    d.id = "chatCyclerUI";
+    d.innerHTML = temp;
+    d.style.zIndex = 999999;
+    document.body.appendChild(d);
+    const val = document.querySelector('textarea[name="overlay_messages"]');
+    val.value = overlay.inputString;
+    val.addEventListener('input', function(e) {
+        overlay.inputString = e.target.value;
+    });
+    document.querySelector('input[name="overlay_update_cycle"]').addEventListener('click', function() {
+        if (!overlay.inputString){
+            overlay.tempMsgs = _msgs;
+        }else{
+            overlay.tempMsgs = overlay.inputString.split(/\r?\n/);
+        }
+        msgNum = 99;
+        msgs = overlay.tempMsgs;
+        saveData();
+    });
+    document.querySelector('input[name="overlay_cycle_toggle"]').addEventListener('click', function(e) {
+        msgCycleSwitch = !msgCycleSwitch;
+        if (msgCycleSwitch){
+            chat = setInterval(autoChat, 1);
+            document.querySelector('.overlay_cycle_toggle_value').innerHTML = `<span style="font-size:24px;color:rgba(0, 0, 0, 0.75)";>On</span>`;
+        }else{
+            document.querySelector('.overlay_cycle_toggle_value').innerHTML = `<span style="font-size:24px;color:rgba(0, 0, 0, 0.75)";>Off</span>`;
+            clearInterval(chat);
+            msgNum = 0;
+        }
+    });
+}
+
+function concatBuffers(buffer1, buffer2){
+  var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+  tmp.set(new Uint8Array(buffer1), 0);
+  tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+  return tmp.buffer;
+}
+
+const four = Uint8Array.from([4]).buffer;
+
+function autoChat(){
+    socket && socket.send(msgpack.encode(["ch", [msgs[msgNum]]]));
+    msgNum++;
+    if (msgNum >= msgs.length) msgNum = 0;
+}
+
+function storageAvailable(type){
+	try{
+		var storage = window[type],
+			x = '__storage_test__';
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return true;
+	}
+	catch(e){
+		return false;
+	}
+}
+
+function saveData(){
+    if (storageAvailable('localStorage')){
+        localStorage.setItem("msgs", JSON.stringify(msgs));
+    }
+}
+
+window.addEventListener('keydown', function (event){
+    if (overlay.toggle) event.stopImmediatePropagation();
+    if (!minus && event.keyCode === 19){ //L
+        msgCycleSwitch = !msgCycleSwitch;
+        if (msgCycleSwitch){
+            chat = setInterval(autoChat, 0);
+        }else{
+            clearInterval(chat);
+            msgNum =0;
+        }
+        minus = true;
+    }
+    if (!home && event.keyCode === overlay.keyCode){ //HOME
+        overlay.toggle = !overlay.toggle;
+        toggleOverlay(overlay.toggle);
+        home = true;
+    }
+});
+
+window.addEventListener('keypress', function (event){
+    if (overlay.toggle) event.stopImmediatePropagation();
+});
+
+window.addEventListener('keyup', function (event){
+    if (overlay.toggle) event.stopImmediatePropagation();
+    if (event.keyCode == 19){
+        minus = false;
+    }else if (event.keyCode == 36){
+        home = false;
+    }
+});
+// ==/UserScript==
+
+
+var autoreloadloop;
+var autoreloadenough = 0;
+
+autoreloadloop = setInterval(function () {
+    if (autoreloadenough < 200) {
+
+        if (document.getElementById("loadingText").innerHTML == `disconnected<a href="javascript:window.location.href=window.location.href" class="ytLink">reload</a>`) {
+            clearInterval(autoreloadloop);
+            setTimeout(function () {document.title = "Moo Moo";}, 1000)
+            location.reload();
+        }
+        autoreloadenough++;
+    }
+    else if (autoreloadenough >= 300) {
+        clearInterval(autoreloadloop);
+        setTimeout(function () {document.title = "Moo Moo";}, 1000)
+    }
+}, 50);
+
+(() => {
+	try {
+		class Collection {
+			constructor(array = []) {
+				this.__array = array;
+			}
+
+			fromID(id) {
+				return this.__array.filter(thing => thing.id === id);
+			}
+
+			get(id) {
+				return this.fromID(id)[0];
+			}
+
+			has(id) {
+				return this.fromID(id).length > 0;
+			}
+
+			forEach(callback) {
+				this.__array.forEach(callback);
+			}
+		}
+
+		const canvas = document.getElementById("gameCanvas");
+		const ctx = canvas.getContext("2d");
+
+		const players = {};
+		let currentID = null;
+
+		let ws;
+
+		function randInt(min, max) {
+			const mini = Math.ceil(min);
+			return Math.floor(Math.random() * (Math.floor(max) - mini + 1)) + mini;
+		}
+		function randItem(array) {
+			return array[randInt(0, array.length - 1)];
+		}
+
+		const modules = new Collection([{
+			id: "core",
+			name: "Core",
+			description: "YkquL-_0?ModSuck",
+			required: true,
+			init: () => {
+				const example = $($("#linksContainer2").children()[0]);
+
+				const mesLink = example.clone();
+				mesLink.text(`MES v${GM_info.script.version}`);
+				mesLink.attr("href", "https://github.com/Nebula-Developers/Moomoo-Enhancement-Suite");
+
+				example.after(" | ", mesLink);
+			}
+		}, {
+			id: "tracers",
+			name: "Tracers",
+			settings: [{
+				id: "line_color",
+				type: "color",
+				name: "Line Color",
+				description: "The color of the tracers.",
+				default: "#000000"
+			}],
+			init: () => {
+				function drawTracers() {
+					Object.values(players).forEach(player => {
+						if (currentID === null || players[currentID] === undefined || players[currentID].longID === undefined) return;
+
+						ctx.strokeStyle = color;
+						ctx.lineWidth = 3;
+
+						const player2 = players[currentID];
+
+						ctx.beginPath();
+						ctx.moveTo(player2.x, player2.y);
+						ctx.lineTo(player.x, player.y);
+						ctx.stroke();
+					});
+
+					window.requestAnimationFrame(drawTracers);
+				}
+				drawTracers();
+			},
+		}, {
+			id: "auto_chat",
+			name: "Automatic Chat",
+			description: "Automatically chats certain messages.",
+			settings: [{
+				id: "messages",
+				name: "Message List",
+				hover: "You can insert multiple messages with a comma; if you want to say both '1' and '2', put '1,2'.",
+				default: "Hello!,Git gud!",
+				type: "text",
+			}, {
+				id: "randomize_messages",
+				name: "Randomize Messages",
+				default: true,
+				type: "checkbox",
+			}],
+			init: () => {
+				let index = 0;
+				const messages = config.auto_chat.messages.split(",");
+
+				setInterval(() => {
+					if (ws) {
+						const toSend = config.auto_chat.randomize_messages ? randItem(messages) : messages[index];
+
+						ws.emit("ch", [
+							toSend,
+						]);
+
+						index += 1;
+						if (index >= messages.length) {
+							index = 0;
+						}
+					}
+				}, 3000);
+			}
+		}, {
+			id: "smart_hat",
+			name: "Smart Hats",
+			description: "This module allows you to equip certain hats at certain times to get the most out of those actions.",
+		}, {
+			id: "heal",
+			name: "Autoheal",
+			description: "With this module, you can automatically heal when you get damaged.",
+		}, {
+			id: "object_map",
+			name: "Object Mapper",
+			description: "Maps the position of objects to your minimap.",
+		}, {
+			id: "projectile_blocker",
+			name: "Arrow Blocking",
+			description: "When you have a shield, this module will prevent arrows from hitting you by equipping it and blocking the arrow.",
+		}, {
+			id: "coordinates",
+			name: "Coordinates",
+			description: "Shows your coordinates.",
+		}, {
+			id: "minimap_biomes",
+			name: "Biomes on Minimap",
+			description: "Shows the different biomes on the minimap by coloring each region.",
+			init: () => {
+				$("#mapDisplay").css("background", "url('https://tse4.mm.bing.net/th?id=OIP.mS1fBWlwobEuLLEb2WDy8AHaEo&pid=Api&P=0&w=288&h=181')");
+			},
+			deinit: () => {
+				$("#mapDisplay").css("background", "rgba(0, 0, 0, 0.25)");
+			},
+		}, {
+			id: "custom_text",
+			name: "Custom Text",
+			description: "This module lets you change the text of many things.",
+			settings: [{
+				id: "death",
+				name: "Death",
+				default: "YkquL-_0? u Pro Again Bro",
+				type: "text",
+			}, {
+				id: "title",
+				name: "Title",
+				default: "Moo Moo",
+				type: "text",
+			}],
+			init: () => {
+				$("#diedText").text(config.custom_text.death);
+				document.title = config.custom_text.title;
+			},
+		}, {
+			id: "ping_display",
+			name: "Show Ping",
+			description: "Adds the ping counter in-game.",
+			init: () => {
+				const pingDisplay = $("#pingDisplay");
+				pingDisplay.css("top", "3px");
+				pingDisplay.css("display", "block");
+
+				$("body").append(pingDisplay);
+			}
+		}]);
+
+		const config = JSON.parse(localStorage.getItem("mes_config")) || {};
+		function setConfig(moduleID, key, value) {
+			if (!config[moduleID]) {
+				config[moduleID] = {};
+			}
+
+			if (!(key === undefined || value === undefined)) {
+				config[moduleID][key] = value;
+			}
+
+			return localStorage.setItem("mes_config", JSON.stringify(config));
+		}
+		modules.forEach(module => {
+			setConfig(module.id);
+		});
+
+		WebSocket = class extends WebSocket {
+			constructor(...arg) {
+				super(...arg);
+				ws = this;
+
+				this.addEventListener("message", event => {
+					const data = msgpack.decode(event.data);
+
+					switch (data[0]) {
+						case "1":
+							currentID = data[1][0];
+						case "2":
+							players[data[1][0][1]] = {
+								longID: data[1][0][0],
+								name: data[1][0][2],
+								x: data[1][0][3],
+								y: data[1][0][4],
+								angle: data[1][0][5],
+								lastUpdated: Date.now(),
+							};
+							break;
+						case "3":
+							for (let i = 0, len = data[1][0].length / 13; i < len; i++) {
+								if (!players[data[1][0][0 + i * 13]]) {
+									players[data[1][0][0 + i * 13]] = {
+										x: data[1][0][1 + i * 13],
+										y: data[1][0][2 + i * 13],
+										angle: data[1][0][3 + i * 13],
+										lastUpdated: Date.now(),
+									};
+								} else {
+									const p = players[data[1][0][0 + i * 13]];
+									p.x = data[1][0][1 + i * 13];
+									p.y = data[1][0][2 + i * 13],
+									p.angle = data[1][0][3 + i * 13],
+									p.lastUpdated = Date.now();
+								}
+							}
+							break;
+						case "4":
+							for (const k in players) {
+								if (players[k].longID == data[1][0]) delete players[k];
+							}
+					}
+				});
+
+				this._send = this.send;
+				this.send = function () {
+					this._send.apply(this, arguments);
+				};
+				this.emit = function () {
+					const input = msgpack.encode(arguments);
+					this.send(input);
+				}
+			}
+		};
+
+		let menuOpen = false;
+
+		const gameUI = $("#gameUI");
+
+		const menuButton = $("#allianceButton").clone(false);
+		menuButton.children()[0].innerText = "touch_app";
+		menuButton.css("right", "450px");
+		menuButton.attr("title", `Moomoo Enhancement Script v${GM_info.script.version}`);
+
+		menuButton.on("click", toggleMenu);
+
+		gameUI.append(menuButton);
+
+		const menuWrapper = $("<div/>");
+
+		menuWrapper.css("display", "none");
+		menuWrapper.css("width", "100%");
+		menuWrapper.css("position", "absolute");
+		menuWrapper.css("top", "50%");
+		menuWrapper.css("transform", "translateY(-50%)");
+		menuWrapper.css("text-align", "center");
+		menuWrapper.css("pointer-events", "initial");
+
+		const hackMenu = $("<div/>");
+		hackMenu.attr("id", "hackMenu");
+
+		const settingsBox = $("<div/>");
+		settingsBox.attr("id", "settingsBox");
+
+		const categoryChoose = $("<select/>");
+		categoryChoose.css("width", "30%");
+		categoryChoose.append("<option disabled>Choose Category</option>");
+
+		// Add all modules to the module options select...
+		modules.forEach(module => {
+			const moduleOpt = $("<option/>");
+
+			moduleOpt.attr("value", module.id);
+			moduleOpt.text(module.name)
+
+			categoryChoose.append(moduleOpt);
+		});
+
+		function makeInput(setting, configVal) {
+			const input = $(`<input/>`);
+
+			input.attr("type", setting.type);
+			input.attr("name", setting.id);
+
+			input.css("margin", "5px");
+			input.css("max-width", "25px");
+
+			const label = $(`<label class="settingRadio" />`);
+
+			label.text(setting.name);
+			input.attr("title", setting.hover);
+
+			switch (setting.type) {
+				case "text":
+					input.css("width", "170px");
+					input.css("max-width", "170px");
+
+					input.attr("placeholder", `Default: ${setting.default}`);
+					input.val(configVal);
+
+					label.text(setting.name + ":");
+
+					break;
+				case "checkbox":
+					input.prop("checked", configVal);
+					break;
+				default:
+					input.val(configVal);
+			}
+
+			if (setting.type === "text") {
+				label.append(input);
+			} else {
+				label.prepend(input);
+			}
+
+			return label;
+		}
+
+		categoryChoose.on("change", event => {
+			const newmod = modules.get(event.target.value);
+			settingsBox.empty();
+
+			const desc = $("<p/>");
+			desc.text(newmod.description || `You can change settings for the ${newmod.name} module here.`);
+			settingsBox.append(desc);
+
+			if (!newmod.required) {
+				const enabledToggle = makeInput({
+					type: "checkbox",
+					id: "enabled",
+					name: "Enable Module",
+					hover: "Toggles all functionality in this module.",
+				}, config[newmod.id].enabled);
+				settingsBox.append(enabledToggle);
+			}
+
+			// Append module-provided settings.
+			if (newmod.settings) {
+				newmod.settings.forEach(setting => {
+					settingsBox.append("<br/>");
+					settingsBox.append(makeInput(setting, config[newmod.id][setting.id]));
+				});
+			}
+		});
+
+		settingsBox.on("change", event => {
+			const target = $(event.target);
+
+			switch (target.attr("type")) {
+				case "checkbox":
+					return setConfig(categoryChoose.val(), target.attr("name"), target.prop("checked"));
+				default:
+					return setConfig(categoryChoose.val(), target.attr("name"), target.val());
+			}
+		});
+
+		categoryChoose.val("core").change();
+
+		hackMenu.append("<h1>Options</h2>");
+		hackMenu.append(categoryChoose);
+		hackMenu.append(settingsBox);
+
+		menuWrapper.append(hackMenu);
+		gameUI.append(menuWrapper);
+
+		$("head").append(`
+			<style>
+				#hackMenu {
+					background-color: rgb(119, 0, 1, 0.75);
+					width: 400px;
+					height: 400px;
+					color: white;
+					max-height: calc(100vh - 400px);
+					overflow-y: hidden;
+					display: inline-block;
+					border-radius: 4px;
+				}
+				#settingsBox {
+					height: 300px;
+					overflow-y: scroll;
+					padding: 25px;
+					text-align: left;
+					font-size: 18px;
+				}
+				h1 {
+					font-size: 26px;
+					text-transform: uppercase;
+				}
+			</style>
+		`);
+
+		function toggleMenu() {
+			menuOpen = !menuOpen;
+			menuWrapper.css("display", menuOpen ? "block" : "none");
+		}
+
+		modules.forEach(module => {
+			if (config[module.id].enabled || module.required) {
+				if (module.init) {
+					module.init();
+				} else {
+					console.warn(`Module ${module.id} has no initialization.`);
+				}
+			}
+		});
+	} catch (e) {
+		console.warn(e)
+	}
+})();
+// ==/UserScript==
+document.getElementById('diedText').innerHTML = 'MajoRMod BesT!';
+document.getElementById('loadingText').innerHTML = '.....Load MajoRMoD.....';
+document.getElementById('gameName').innerHTML = 'MajoRMod BEST!';
+document.getElementById("gameName").style.color = "blue";
+
+
+$('#leaderboard').append('Like skull?');
+let newImg = document.createElement("img");
+newImg.src = "https://i.imgur.com/OZL1PXR.png";
+newImg.style = `position: absolute; top: 15px; left: 15px; z-index: 100000; width: 50px; height: 50px; cursor: pointer;`;
+document.body.prepend(newImg);
+newImg.addEventListener("click", () => {
+       let w = window.open("http://paullinder.se/paulw/wp-content/themes/paulw/images/nopeNothingHere.gif", null, `height=650, width=1199, status=yes, toolbar=no, menubar=no, location=no`);
+});
+document.getElementById("mainMenu").style.backgroundImage = "url(http://wallpaperheart.com/wp-content/uploads/2018/03/cool-backgrounds-dragons.jpg)";
+(function() {
+    var můjVar;
+    var můjVar2;
+    var můjVar3;
+    var můjVar4;
+    var můjVar5;
+    var můjVar6;
+    var můjVar7;
+    var můjVar8;
+    var můjVar9;
+    var můjVar10;
+    var můjVar11;
+    var můjVar12;
+    var můjVar13;
+    var můjVar14;
+    var můjVar15;
+    var můjVar16;
+    var můjVar17;
+    var můjVar18;
+    var můjVar19;
+    var můjVar20;
+    var můjVar21;
+    var můjVar22;
+    var můjVar23;
+    var můjVar24;
+    var můjVar25;
+    var můjVar26;
+    var můjVar27;
+    var můjVar28;
+    var můjVar29;
+    var můjVar30;
+    var můjVar31;
+    var můjVar32;
+    var můjVar33;
+    var můjVar34;
+    var můjVar35;
+    var můjVar36;
+    var můjVar37;
+    var můjVar38;
+    var můjVar39;
+    var můjVar40;
+    var můjVar41;
+	var změna = true;
+    var ID_FΔZΣ = 45;
+	var ID_Moo_Head = 28;
+    var ID_Moo_Cap = 51;
+    var ID_Apple_Cap = 50;
+	var ID_Pig_Head = 29;
+    var ID_Fluff_Head = 30;
+    var ID_Pandou_Head = 36;
+    var ID_Bear_Head = 37;
+    var ID_Monkey_Head = 38;
+    var ID_Polar_Head = 44;
+	var ID_Fez_Hat = 35;
+	var ID_Enigma_Hat = 42;
+	var ID_Blitz_Hat = 43;
+	var ID_Bob_XIII_Hat = 49;
+	var ID_Bummle_Hat = 8;
+	var ID_Straw_Hat = 2;
+	var ID_Winter_Cap = 15;
+	var ID_Cowboy_Hat = 5;
+	var ID_Ranger_Hat = 4;
+	var ID_Explorer_Hat = 18;
+	var ID_Flipper_Hat = 31;
+	var ID_Marksman_Cap = 1;
+	var ID_Bush_Gear = 10;
+    var ID_Halo = 48;
+	var ID_Soldier_Helmet = 6;
+	var ID_Anti_Venom_Gear = 23;
+	var ID_Medic_Gear = 13;
+	var ID_Miners_Helmet = 9;
+	var ID_Musketeer_Hat = 32;
+	var ID_Bull_Helmet = 7;
+    var ID_Emp_Helmet = 22;
+    var ID_Booster_Hat = 12;
+    var ID_Barbarian_Armor = 26;
+    var ID_Plague_Mask = 21;
+    var ID_Bull_Mask = 46;
+    var ID_Windmill_Hat = 14;
+    var ID_Spike_Gear = 11;
+    var ID_Samurai_Armor = 20;
+    var ID_Bushido_Armor = 16;
+    var ID_Scavenger_Gear = 27;
+    var ID_Tank_Gear = 40;
+
+	document.addEventListener('keydown', function (e) {
+		if (e.keyCode == 118) {
+			e.preventDefault();
+			if (změna) {
+            storeEquip(ID_FΔZΣ);
+            můjVar = setTimeout(function(){ h1(); }, 75);
+			} else {
+            clearTimeout(můjVar);
+            clearTimeout(můjVar2);
+            clearTimeout(můjVar3);
+            clearTimeout(můjVar4);
+            clearTimeout(můjVar5);
+            clearTimeout(můjVar6);
+            clearTimeout(můjVar7);
+            clearTimeout(můjVar8);
+            clearTimeout(můjVar9);
+            clearTimeout(můjVar10);
+            clearTimeout(můjVar11);
+            clearTimeout(můjVar12);
+            clearTimeout(můjVar13);
+            clearTimeout(můjVar14);
+            clearTimeout(můjVar15);
+            clearTimeout(můjVar16);
+            clearTimeout(můjVar17);
+            clearTimeout(můjVar18);
+            clearTimeout(můjVar19);
+            clearTimeout(můjVar20);
+            clearTimeout(můjVar21);
+            clearTimeout(můjVar22);
+            clearTimeout(můjVar23);
+            clearTimeout(můjVar24);
+            clearTimeout(můjVar25);
+            clearTimeout(můjVar26);
+            clearTimeout(můjVar27);
+            clearTimeout(můjVar28);
+            clearTimeout(můjVar29);
+            clearTimeout(můjVar30);
+            clearTimeout(můjVar31);
+            clearTimeout(můjVar32);
+            clearTimeout(můjVar33);
+            clearTimeout(můjVar34);
+            clearTimeout(můjVar35);
+            clearTimeout(můjVar36);
+            clearTimeout(můjVar37);
+            clearTimeout(můjVar38);
+            clearTimeout(můjVar39);
+            clearTimeout(můjVar40);
+            clearTimeout(můjVar41);
+            storeEquip(ID_FΔZΣ);
+			}
+			změna = !změna;
+		}
+	});
+
+    function h1() {
+    storeEquip(ID_FΔZΣ);
+    clearTimeout(můjVar);
+    můjVar2 = setTimeout(function(){ h2(); }, 75);
+    }
+    function h2() {
+    storeEquip(ID_Moo_Head);
+    clearTimeout(můjVar2);
+    můjVar3 = setTimeout(function(){ h3(); }, 75);
+    }
+    function h3() {
+    storeEquip(ID_Pig_Head);
+    clearTimeout(můjVar3);
+    můjVar4 = setTimeout(function(){ h4(); }, 75);
+    }
+    function h4() {
+    storeEquip(ID_Fluff_Head);
+    clearTimeout(můjVar4);
+    můjVar5 = setTimeout(function(){ h5(); }, 75);
+    }
+    function h5() {
+    storeEquip(ID_Pandou_Head);
+    clearTimeout(můjVar5);
+    můjVar6 = setTimeout(function(){ h6(); }, 75);
+    }
+    function h6() {
+    storeEquip(ID_Bear_Head);
+    clearTimeout(můjVar6);
+    můjVar7 = setTimeout(function(){ h7(); }, 75);
+    }
+    function h7() {
+    storeEquip(ID_Monkey_Head);
+    clearTimeout(můjVar7);
+    můjVar8 = setTimeout(function(){ h8(); }, 75);
+    }
+    function h8() {
+    storeEquip(ID_Polar_Head);
+    clearTimeout(můjVar8);
+    můjVar9 = setTimeout(function(){ h9(); }, 75);
+    }
+    function h9() {
+    storeEquip(ID_Fez_Hat);
+    clearTimeout(můjVar9);
+    můjVar10 = setTimeout(function(){ h10(); }, 75);
+    }
+    function h10() {
+    storeEquip(ID_Enigma_Hat);
+    clearTimeout(můjVar10);
+    můjVar11 = setTimeout(function(){ h11(); }, 75);
+    }
+    function h11() {
+    storeEquip(ID_Blitz_Hat);
+    clearTimeout(můjVar11);
+    můjVar12 = setTimeout(function(){ h12(); }, 75);
+    }
+    function h12() {
+    storeEquip(ID_Bob_XIII_Hat);
+    clearTimeout(můjVar12);
+    můjVar13 = setTimeout(function(){ h13(); }, 75);
+    }
+     function h13() {
+    storeEquip(ID_Moo_Cap);
+    clearTimeout(můjVar12);
+    můjVar14 = setTimeout(function(){ h14(); }, 75);
+    }
+     function h14() {
+    storeEquip(ID_Apple_Cap);
+    clearTimeout(můjVar12);
+    můjVar = setTimeout(function(){ h1(); }, 75);
+    }
+})();
+
+(function() {
+    var můjVar;
+    var můjVar2;
+    var můjVar3;
+    var můjVar4;
+    var můjVar5;
+    var můjVar6;
+    var můjVar7;
+    var můjVar8;
+    var můjVar9;
+    var můjVar10;
+    var můjVar11;
+    var můjVar12;
+    var můjVar13;
+    var můjVar14;
+    var můjVar15;
+    var můjVar16;
+    var můjVar17;
+    var můjVar18;
+    var můjVar19;
+    var můjVar20;
+    var můjVar21;
+    var můjVar22;
+    var můjVar23;
+    var můjVar24;
+    var můjVar25;
+    var můjVar26;
+    var můjVar27;
+    var můjVar28;
+    var můjVar29;
+    var můjVar30;
+    var můjVar31;
+    var můjVar32;
+    var můjVar33;
+    var můjVar34;
+    var můjVar35;
+    var můjVar36;
+    var můjVar37;
+    var můjVar38;
+    var můjVar39;
+    var můjVar40;
+    var můjVar41;
+	var změna = true;
+    var ID_FΔZΣ = 45;
+	var ID_Moo_Head = 28;
+	var ID_Pig_Head = 29;
+    var ID_Fluff_Head = 30;
+    var ID_Pandou_Head = 36;
+    var ID_Bear_Head = 37;
+    var ID_Monkey_Head = 38;
+    var ID_Polar_Head = 44;
+	var ID_Fez_Hat = 35;
+	var ID_Enigma_Hat = 42;
+	var ID_Blitz_Hat = 43;
+	var ID_Bob_XIII_Hat = 49;
+	var ID_Bummle_Hat = 8;
+	var ID_Straw_Hat = 2;
+	var ID_Winter_Cap = 15;
+	var ID_Cowboy_Hat = 5;
+	var ID_Ranger_Hat = 4;
+	var ID_Explorer_Hat = 18;
+	var ID_Flipper_Hat = 31;
+	var ID_Marksman_Cap = 1;
+	var ID_Bush_Gear = 10;
+    var ID_Halo = 48;
+	var ID_Soldier_Helmet = 6;
+	var ID_Anti_Venom_Gear = 23;
+	var ID_Medic_Gear = 13;
+	var ID_Miners_Helmet = 9;
+	var ID_Musketeer_Hat = 32;
+	var ID_Bull_Helmet = 7;
+    var ID_Emp_Helmet = 22;
+    var ID_Booster_Hat = 12;
+    var ID_Barbarian_Armor = 26;
+    var ID_Plague_Mask = 21;
+    var ID_Bull_Mask = 46;
+    var ID_Windmill_Hat = 14;
+    var ID_Spike_Gear = 11;
+    var ID_Samurai_Armor = 20;
+    var ID_Bushido_Armor = 16;
+    var ID_Scavenger_Gear = 27;
+    var ID_Tank_Gear = 40;
+    var ID_Moo_Cap = 51;
+    var ID_Apple_Cap = 50;
+
+	document.addEventListener('keydown', function (e) {
+		if (e.keyCode == 117) {
+			e.preventDefault();
+			if (změna) {
+            storeEquip(ID_FΔZΣ);
+            můjVar = setTimeout(function(){ h1(); }, 75);
+			} else {
+            clearTimeout(můjVar);
+            clearTimeout(můjVar2);
+            clearTimeout(můjVar3);
+            clearTimeout(můjVar4);
+            clearTimeout(můjVar5);
+            clearTimeout(můjVar6);
+            clearTimeout(můjVar7);
+            clearTimeout(můjVar8);
+            clearTimeout(můjVar9);
+            clearTimeout(můjVar10);
+            clearTimeout(můjVar11);
+            clearTimeout(můjVar12);
+            clearTimeout(můjVar13);
+            clearTimeout(můjVar14);
+            clearTimeout(můjVar15);
+            clearTimeout(můjVar16);
+            clearTimeout(můjVar17);
+            clearTimeout(můjVar18);
+            clearTimeout(můjVar19);
+            clearTimeout(můjVar20);
+            clearTimeout(můjVar21);
+            clearTimeout(můjVar22);
+            clearTimeout(můjVar23);
+            clearTimeout(můjVar24);
+            clearTimeout(můjVar25);
+            clearTimeout(můjVar26);
+            clearTimeout(můjVar27);
+            clearTimeout(můjVar28);
+            clearTimeout(můjVar29);
+            clearTimeout(můjVar30);
+            clearTimeout(můjVar31);
+            clearTimeout(můjVar32);
+            clearTimeout(můjVar33);
+            clearTimeout(můjVar34);
+            clearTimeout(můjVar35);
+            clearTimeout(můjVar36);
+            clearTimeout(můjVar37);
+            clearTimeout(můjVar38);
+            clearTimeout(můjVar39);
+                clearTimeout(můjVar40);
+                clearTimeout(můjVar41);
+            storeEquip(ID_FΔZΣ);
+			}
+			změna = !změna;
+		}
+	});
+
+    function h1() {
+    storeEquip(ID_FΔZΣ);
+    clearTimeout(můjVar);
+    můjVar2 = setTimeout(function(){ h2(); }, 75);
+    }
+    function h2() {
+    storeEquip(ID_Moo_Head);
+    clearTimeout(můjVar2);
+    můjVar3 = setTimeout(function(){ h3(); }, 75);
+    }
+    function h3() {
+    storeEquip(ID_Pig_Head);
+    clearTimeout(můjVar3);
+    můjVar4 = setTimeout(function(){ h4(); }, 75);
+    }
+    function h4() {
+    storeEquip(ID_Fluff_Head);
+    clearTimeout(můjVar4);
+    můjVar5 = setTimeout(function(){ h5(); }, 75);
+    }
+    function h5() {
+    storeEquip(ID_Pandou_Head);
+    clearTimeout(můjVar5);
+    můjVar6 = setTimeout(function(){ h6(); }, 75);
+    }
+    function h6() {
+    storeEquip(ID_Bear_Head);
+    clearTimeout(můjVar6);
+    můjVar7 = setTimeout(function(){ h7(); }, 75);
+    }
+    function h7() {
+    storeEquip(ID_Monkey_Head);
+    clearTimeout(můjVar7);
+    můjVar8 = setTimeout(function(){ h8(); }, 75);
+    }
+    function h8() {
+    storeEquip(ID_Polar_Head);
+    clearTimeout(můjVar8);
+    můjVar9 = setTimeout(function(){ h9(); }, 75);
+    }
+    function h9() {
+    storeEquip(ID_Fez_Hat);
+    clearTimeout(můjVar9);
+    můjVar10 = setTimeout(function(){ h10(); }, 75);
+    }
+    function h10() {
+    storeEquip(ID_Enigma_Hat);
+    clearTimeout(můjVar10);
+    můjVar11 = setTimeout(function(){ h11(); }, 75);
+    }
+    function h11() {
+    storeEquip(ID_Blitz_Hat);
+    clearTimeout(můjVar11);
+    můjVar12 = setTimeout(function(){ h12(); }, 75);
+    }
+    function h12() {
+    storeEquip(ID_Bob_XIII_Hat);
+    clearTimeout(můjVar12);
+    můjVar13 = setTimeout(function(){ h13(); }, 75);
+    }
+        function h13() {
+    storeEquip(ID_Bummle_Hat);
+    clearTimeout(můjVar13);
+    můjVar14 = setTimeout(function(){ h14(); }, 75);
+    }
+    function h14() {
+    storeEquip(ID_Straw_Hat);
+    clearTimeout(můjVar14);
+    můjVar15 = setTimeout(function(){ h15(); }, 75);
+    }
+    function h15() {
+    storeEquip(ID_Winter_Cap);
+    clearTimeout(můjVar15);
+    můjVar16 = setTimeout(function(){ h16(); }, 75);
+    }
+    function h16() {
+    storeEquip(ID_Cowboy_Hat);
+    clearTimeout(můjVar16);
+    můjVar17 = setTimeout(function(){ h17(); }, 75);
+    }
+    function h17() {
+    storeEquip(ID_Ranger_Hat);
+    clearTimeout(můjVar17);
+    můjVar18 = setTimeout(function(){ h18(); }, 75);
+    }
+    function h18() {
+    storeEquip(ID_Explorer_Hat);
+    clearTimeout(můjVar18);
+    můjVar19 = setTimeout(function(){ h19(); }, 75);
+    }
+    function h19() {
+    storeEquip(ID_Flipper_Hat);
+    clearTimeout(můjVar19);
+    můjVar20 = setTimeout(function(){ h20(); }, 75);
+    }
+    function h20() {
+    storeEquip(ID_Marksman_Cap);
+    clearTimeout(můjVar20);
+    můjVar21 = setTimeout(function(){ h21(); }, 75);
+    }
+    function h21() {
+    storeEquip(ID_Bush_Gear);
+    clearTimeout(můjVar21);
+    můjVar22 = setTimeout(function(){ h22(); }, 75);
+    }
+    function h22() {
+    storeEquip(ID_Halo);
+    clearTimeout(můjVar22);
+    můjVar23 = setTimeout(function(){ h23(); }, 75);
+    }
+    function h23() {
+    storeEquip(ID_Soldier_Helmet);
+    clearTimeout(můjVar23);
+    můjVar24 = setTimeout(function(){ h24(); }, 75);
+    }
+    function h24() {
+    storeEquip(ID_Anti_Venom_Gear);
+    clearTimeout(můjVar24);
+    můjVar25 = setTimeout(function(){ h25(); }, 75);
+    }
+    function h25() {
+    storeEquip(ID_Medic_Gear);
+    clearTimeout(můjVar25);
+    můjVar26 = setTimeout(function(){ h26(); }, 75);
+    }
+    function h26() {
+    storeEquip(ID_Miners_Helmet);
+    clearTimeout(můjVar26);
+    můjVar27 = setTimeout(function(){ h27(); }, 75);
+    }
+    function h27() {
+    storeEquip(ID_Musketeer_Hat);
+    clearTimeout(můjVar27);
+    můjVar28 = setTimeout(function(){ h28(); }, 75);
+    }
+    function h28() {
+    storeEquip(ID_Bull_Helmet);
+    clearTimeout(můjVar28);
+    můjVar29 = setTimeout(function(){ h29(); }, 75);
+    }
+    function h29() {
+    storeEquip(ID_Emp_Helmet);
+    clearTimeout(můjVar29);
+    můjVar30 = setTimeout(function(){ h30(); }, 75);
+    }
+    function h30() {
+    storeEquip(ID_Booster_Hat);
+    clearTimeout(můjVar30);
+    můjVar31 = setTimeout(function(){ h31(); }, 75);
+    }
+    function h31() {
+    storeEquip(ID_Barbarian_Armor);
+    clearTimeout(můjVar31);
+    můjVar32 = setTimeout(function(){ h32(); }, 75);
+    }
+    function h32() {
+    storeEquip(ID_Plague_Mask);
+    clearTimeout(můjVar32);
+    můjVar33 = setTimeout(function(){ h33(); }, 75);
+    }
+    function h33() {
+    storeEquip(ID_Bull_Mask);
+    clearTimeout(můjVar33);
+    můjVar34 = setTimeout(function(){ h34(); }, 75);
+    }
+    function h34() {
+    storeEquip(ID_Windmill_Hat);
+    clearTimeout(můjVar34);
+    můjVar35 = setTimeout(function(){ h35(); }, 75);
+    }
+    function h35() {
+    storeEquip(ID_Spike_Gear);
+    clearTimeout(můjVar35);
+    můjVar36 = setTimeout(function(){ h36(); }, 75);
+    }
+    function h36() {
+    storeEquip(ID_Samurai_Armor);
+    clearTimeout(můjVar36);
+    můjVar37 = setTimeout(function(){ h37(); }, 75);
+    }
+    function h37() {
+    storeEquip(ID_Bushido_Armor);
+    clearTimeout(můjVar37);
+    můjVar38 = setTimeout(function(){ h38(); }, 75);
+    }
+    function h38() {
+    storeEquip(ID_Scavenger_Gear);
+    clearTimeout(můjVar38);
+    můjVar39 = setTimeout(function(){ h39(); }, 75);
+    }
+    function h39() {
+    storeEquip(ID_Tank_Gear);
+    clearTimeout(můjVar39);
+    můjVar40 = setTimeout(function(){ h40(); }, 75);
+    }
+         function h40() {
+    storeEquip(ID_Moo_Cap);
+    clearTimeout(můjVar12);
+    můjVar41 = setTimeout(function(){ h41(); }, 75);
+    }
+     function h41() {
+    storeEquip(ID_Apple_Cap);
+    clearTimeout(můjVar12);
+    můjVar = setTimeout(function(){ h1(); }, 75);
+    }
+})();
+
+(function() {
+    var můjVar;
+    var můjVar2;
+    var můjVar3;
+    var můjVar4;
+    var můjVar5;
+    var můjVar6;
+    var můjVar7;
+    var můjVar8;
+    var můjVar9;
+    var můjVar10;
+    var můjVar11;
+    var můjVar12;
+    var můjVar13;
+    var můjVar14;
+    var můjVar15;
+    var můjVar16;
+    var můjVar17;
+    var můjVar18;
+    var můjVar19;
+    var můjVar20;
+    var můjVar21;
+    var můjVar22;
+    var můjVar23;
+    var můjVar24;
+    var můjVar25;
+    var můjVar26;
+    var můjVar27;
+    var můjVar28;
+    var můjVar29;
+    var můjVar30;
+    var můjVar31;
+    var můjVar32;
+    var můjVar33;
+    var můjVar34;
+    var můjVar35;
+    var můjVar36;
+    var můjVar37;
+    var můjVar38;
+    var můjVar39;
+    var můjVar40;
+    var můjVar41;
+	var změna = true;
+    var ID_FΔZΣ = 45;
+	var ID_Moo_Head = 28;
+	var ID_Pig_Head = 29;
+      var ID_Moo_Cap = 51;
+    var ID_Apple_Cap = 50;
+    var ID_Fluff_Head = 30;
+    var ID_Pandou_Head = 36;
+    var ID_Bear_Head = 37;
+    var ID_Monkey_Head = 38;
+    var ID_Polar_Head = 44;
+	var ID_Fez_Hat = 35;
+	var ID_Enigma_Hat = 42;
+	var ID_Blitz_Hat = 43;
+	var ID_Bob_XIII_Hat = 49;
+	var ID_Bummle_Hat = 8;
+	var ID_Straw_Hat = 2;
+	var ID_Winter_Cap = 15;
+	var ID_Cowboy_Hat = 5;
+	var ID_Ranger_Hat = 4;
+	var ID_Explorer_Hat = 18;
+	var ID_Flipper_Hat = 31;
+	var ID_Marksman_Cap = 1;
+	var ID_Bush_Gear = 10;
+    var ID_Halo = 48;
+	var ID_Soldier_Helmet = 6;
+	var ID_Anti_Venom_Gear = 23;
+	var ID_Medic_Gear = 13;
+	var ID_Miners_Helmet = 9;
+	var ID_Musketeer_Hat = 32;
+	var ID_Bull_Helmet = 7;
+    var ID_Emp_Helmet = 22;
+    var ID_Booster_Hat = 12;
+    var ID_Barbarian_Armor = 26;
+    var ID_Plague_Mask = 21;
+    var ID_Bull_Mask = 46;
+    var ID_Windmill_Hat = 14;
+    var ID_Spike_Gear = 11;
+    var ID_Samurai_Armor = 20;
+    var ID_Bushido_Armor = 16;
+    var ID_Scavenger_Gear = 27;
+    var ID_Tank_Gear = 40;
+    var ID_Moo_Cap = 51;
+    var ID_Apple_Cap = 50;
+
+	document.addEventListener('keydown', function (e) {
+		if (e.keyCode == 121) {
+			e.preventDefault();
+			if (změna) {
+            storeEquip(ID_FΔZΣ);
+            můjVar = setTimeout(function(){ h1(); }, 75);
+			} else {
+            clearTimeout(můjVar);
+            clearTimeout(můjVar2);
+            clearTimeout(můjVar3);
+            clearTimeout(můjVar4);
+            clearTimeout(můjVar5);
+            clearTimeout(můjVar6);
+            clearTimeout(můjVar7);
+            clearTimeout(můjVar8);
+            clearTimeout(můjVar9);
+            clearTimeout(můjVar10);
+            clearTimeout(můjVar11);
+            clearTimeout(můjVar12);
+            clearTimeout(můjVar13);
+            clearTimeout(můjVar14);
+            clearTimeout(můjVar15);
+            clearTimeout(můjVar16);
+            clearTimeout(můjVar17);
+            clearTimeout(můjVar18);
+            clearTimeout(můjVar19);
+            clearTimeout(můjVar20);
+            clearTimeout(můjVar21);
+            clearTimeout(můjVar22);
+            clearTimeout(můjVar23);
+            clearTimeout(můjVar24);
+            clearTimeout(můjVar25);
+            clearTimeout(můjVar26);
+            clearTimeout(můjVar27);
+            clearTimeout(můjVar28);
+            clearTimeout(můjVar29);
+            clearTimeout(můjVar30);
+            clearTimeout(můjVar31);
+            clearTimeout(můjVar32);
+            clearTimeout(můjVar33);
+            clearTimeout(můjVar34);
+            clearTimeout(můjVar35);
+            clearTimeout(můjVar36);
+            clearTimeout(můjVar37);
+            clearTimeout(můjVar38);
+            clearTimeout(můjVar39);
+                clearTimeout(můjVar40);
+                clearTimeout(můjVar41);
+            storeEquip(ID_FΔZΣ);
+			}
+			změna = !změna;
+		}
+	});
+
+    function h1() {
+    storeEquip(ID_Winter_Cap);
+    clearTimeout(můjVar);
+    můjVar2 = setTimeout(function(){ h2(); }, 75);
+    }
+    function h2() {
+    storeEquip(ID_Bummle_Hat);
+    clearTimeout(můjVar2);
+    můjVar = setTimeout(function(){ h1(); }, 75);
+    }
+})();// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        http://*/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Your code here...
+})();// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://discord.com/channels/@me/714054371079356458
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Your code here...
+})();
