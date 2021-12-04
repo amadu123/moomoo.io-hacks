@@ -1,0 +1,102 @@
+
+//Link In Description!
+//Only Devs/Coders Know How To Use It!
+//Bye New Video Soon
+
+------------>Free Hats<------------
+
+ClownID - 45
+Moo Cap - 51
+Apple Cap - 50
+Moo Head - 28
+Pig Head - 29
+Fluff Head - 30
+Pandou Head - 36
+Bear Head - 37
+Monkey Head - 38
+Polar Head - 44
+Fez Hat - 35
+Enigma Hat - 42
+Blitz Hat - 43
+Bob XIII Hat - 49
+
+------------>Hats For Gold<------------
+
+Pumpkin Cost 50 ID 57
+Bummel Hat Cost 100 ID 8
+Straw Hat Cost 500 ID 4
+Winter Cap Cost 600 ID 15
+Cowboy Hat Cost 1000 ID 5
+Ranger Hat Cost 2000 ID 4
+Explorer Hat Cost 2000 ID 18
+Flipper Hat Cost 2500 ID 31
+Marksman Cap Cost 3000 ID 1
+Bush Gear Cost 3000 ID 10
+Halo Cost 3000 ID 48
+Soldier Helmet Cost 4000 ID 6
+Anti Venom Gear Cost 4000 ID 23
+Medic Gear Cost 5000 ID 13
+Miners Helmet Cost 5000 ID 9
+Musketeer Hat Cost 5000 ID 32
+Bull Helmet Cost 6000 ID 7
+Emp Helmet Cost 6000 ID 22
+Booster Hat Cost 6000 ID 12
+Barbarian Armor Cost 8000 ID 26
+Plague Mask Cost 10000 ID 21
+Bull Mask Cost 10000 ID 46
+Windmill Hat Cost 10000 ID 14
+Spike Gear Cost 10000 ID 11
+Turret Gear Cost 10000 ID 53
+Samurai Armor Cost 12000 ID 20
+Dark Knight Cost 12000 ID 58
+Scavenger Gear Cost 15000 ID 27
+Tank Gear Cost 15000 ID 40
+Thief Gear Cost 15000 ID 52
+Bloodthirster Cost 20000 ID 55
+Assassin Gear Cost 20000 ID 56
+
+------------>Free Accessories<------------
+
+-
+
+------------>Accessories For Gold<------------
+
+Snowball Cost 1000 ID 12
+Tree Cape Cost 1000 ID 9
+Stone Cape Cost 1000 ID 10
+Cookie Cape Cost 1500 ID 3
+Cow Cape Cost 2000 ID 8
+Monkey Tail Cost 2000 ID 11
+Apple Basket Cost 3000 ID 17
+Winter Cape Cost 3000 ID 6
+Skull Cape Cost 4000 ID 4
+Dash Cape Cost 5000 ID 5
+Dragon Cape Cost 6000 ID 2
+Super Cape Cost 8000 ID 1
+Troll Cape Cost 8000 ID 7
+Thorns Cost 10000 ID 14
+Blockades Cost 10000 ID 15
+Devils Tail Cost 10000 ID 20
+Sawblade Cost 12000 ID 16
+Angel Wings Cost 15000 ID 13
+Shadow Wings Cost 15000 ID 19
+Blood Wings Cost 20000 ID 18
+Corrupt X Wings Cost 20000 ID 21
+
+------------>Weapons<------------
+
+Tool Hammer - ID 0
+Hand Axe - ID 1
+Short Sword - ID 3
+Katana - ID 4
+Polearm - ID 5
+Bat - ID 6
+Daggers - ID 7
+Stick - ID 8
+Hunting Bow - ID 9
+Great Hammer - ID 10
+Wooden Shield - ID 11
+Crossbow - ID 12
+Repeater Crossbow - ID 13
+Mc Grabby - ID 14
+Musket - ID 15

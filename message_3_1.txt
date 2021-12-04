@@ -1,0 +1,1339 @@
+// ==UserScript== 5519
+// @author        by Acree#7877
+// @name         !ZeRe mod!
+// @match        *://moomoo.io/*
+// @match        *://sandbox.moomoo.io/*
+// @grant        none
+// @require https://ksw2-center.glitch.me/users/fzb/antiinvis_1
+// @require https://greasyfork.org/scripts/430844-working-msgpack/code/Working%20msgpack.js?version=960614
+// @require http://code.jquery.com/jquery-3.3.1.min.js
+// @require https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
+// @require https://cdn.jsdelivr.net/gh/emn178/js-sha3/build/sha3.min.js
+// @require https://greasyfork.org/scripts/368273-msgpack/code/msgpack.js?version=598723
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
+// ==UserScript==
+window.atk=function(dir=nearestEnemyAngle){doNewSend(['c', [1, (dir||info2.where)]]);doNewSend(['c', [0, (dir||info2.where)]]);}
+window.BS=0;
+onkeypress=function(e){
+    ((e.key=='0'||e.key=='G')&&(window.BS=!BS))
+}
+
+
+
+setInterval(() => window.follmoo && follmoo(), 10);
+setInterval(function() {
+    //Anti Ad
+    document.querySelector("#pre-content-container").style.display = "none";
+    //more fps
+    window.location.native_resolution = true;
+}, 1000)
+let hue = 0;
+let mouseX;
+let mouseY;
+
+let width;
+let height;
+
+
+setInterval(() => {
+    if(autoaim == true) {
+        doNewSend(["2", [nearestEnemyAngle]]);
+    }
+}, 0);
+
+setInterval(() => {
+    if(click == true) {
+    doNewSend(["c", [1, null]]);
+    doNewSend(["c", [0, null]]);
+    }
+}, 10);
+setInterval(() => {
+    if(autoprimary == true) {
+        doNewSend(["5", [primary, true]]);
+    }
+}, 0);
+
+setInterval(() => {
+    if(autosecondary == true) {
+        doNewSend(["5", [secondary, true]]);
+    }
+}, 0);
+
+
+function normal() {
+    hat(normalHat);
+    acc(normalAcc);
+}
+
+function aim(x, y){
+     var cvs = document.getElementById("gameCanvas");
+     cvs.dispatchEvent(new MouseEvent("mousemove", {
+         clientX: x,
+         clientY: y
+
+     }));
+}
+
+
+var sWindmill = 78;
+var antiinsta = false;
+var antibull = false;
+var bullturret = false;
+var click = false;
+var nearestEnemy;
+var nearestEnemyAngle;
+var isEnemyNear;
+var primary;
+var secondary;
+var foodType;
+var wallType;
+var spikeType;
+var millType;
+var mineType;
+var boostType;
+var turretType;
+var spawnpadType;
+var autoaim = false;
+var autoprimary = false;
+var autosecondary = false;
+var tick = 1;
+var oldHat;
+var oldAcc;
+var enemiesNear;
+var normalHat;
+var normalAcc;
+var ws;
+var msgpack5 = msgpack;
+var boostDir;
+let myPlayer = {
+    id: null,
+    x: null,
+    y: null,
+    dir: null,
+    object: null,
+    weapon: null,
+    clan: null,
+    isLeader: null,
+    hat: null,
+    accessory: null,
+    isSkull: null
+};
+
+var healSpeed = 120;
+var messageToggle = 0;
+var clanToggle = 0;
+let healToggle = 1;
+let healToggle1 = 0;
+let hatToggle = 1;
+let crashing;
+let closed;
+let AutoPlague = 0;
+let katana = 0;
+let aiboost = 0;
+let aibull = 0;
+let aisoldier = 0;
+let ab = 0;
+var PREFIX = "!";
+let clickInsta = 1;
+var havetrap = false;
+var trap_a;
+var trapy;
+window.trapbreaking = 0;
+var intrap,trapid,autobreak = true
+var TrapAngle;
+var aimtrap = false;
+function acc(a) {
+    doNewSend(['13c', [0x0, 0x0, 0x1]]), doNewSend(['13c', [0x0, a, 0x1]]), console['log']('ACCESSORY: ' + a);
+}
+
+function hat(a) {
+    doNewSend(['13c', [0x0, a, 0x0]]), console['log']('ACCESSORY: ' + a);
+}
+document.msgpack = msgpack;
+function n(){
+     this.buffer = new Uint8Array([0]);
+     this.buffer.__proto__ = new Uint8Array;
+     this.type = 0;
+}
+document.addEventListener("mousedown", e => {
+  if (e.button == 1 && iCliked == 1) {
+      doNewSend(["ch", ["Weapon..."]]);
+doNewSend(['5', ['length', !0]]);
+  }
+})
+var didchech=0;
+function Cbiome(){
+    if(didchech){return}
+    didchech=1;
+    setTimeout(e=>{didchech=0},200)
+    doNewSend(["13c", [0, 0, 1]]);
+    doNewSend(["13c", [0, 0, 0]]);
+    if (myPlayer.y < 2400){
+        doNewSend(["13c", [0, 11, 1]]);
+        doNewSend(["13c", [0, 15, 0]]);
+    } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+        doNewSend(["13c", [0, 11, 1]]);
+        doNewSend(["13c", [0, 31, 0]]);
+    } else if (isEnemyNear == true){
+        doNewSend(["13c", [0, 21, 1]]);
+        doNewSend(["13c", [0, 6, 0]]);}
+    else {
+        doNewSend(["13c", [0, 11, 1]]);
+        doNewSend(["13c", [0, 12, 0]]);
+    }
+}
+document.addEventListener("mousedown", e => {
+    !clickInsta&&e.button == 2&&(hat(7),acc(21));
+  /*if (e.button == 2) {
+
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["13c", [1, 7, 0]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [1, 21, 1]]);
+            doNewSend(["13c", [0, 21, 1]]);
+            setTimeout( () => {
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 21, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        if (myPlayer.y < 2400){
+            doNewSend(["13c", [1, 15, 0]]);
+            doNewSend(["13c", [0, 15, 0]]);
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+            doNewSend(["13c", [1, 31, 0]]);
+            doNewSend(["13c", [0, 31, 0]]);
+                } else {
+	        doNewSend(["13c", [1, 12, 0]]);//land
+            doNewSend(["13c", [0, 12, 0]]);//land
+                }
+          }, 120);
+
+
+  }*///there
+     if (e.button == 0 && clickInsta == 1) {
+            autoprimary = true;
+            autosecondary = false;
+            autoaim = true;
+            autoprimary = true;
+            autosecondary = false;
+            doNewSend(["13c", [0, 0, 1]]);
+
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["13c", [1, 7, 0]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [1, 21, 1]]);
+            doNewSend(["13c", [0, 21, 1]]);
+        setTimeout( () => {
+            autoprimary = false;
+            autosecondary = true;
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 53, 0]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["5", [secondary, true]]);
+        }, 110);
+        setTimeout( () => {
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 11, 1]]);
+            if (myPlayer.y < 2400){
+                doNewSend(["13c", [0, 15, 0]]);
+            } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+                doNewSend(["13c", [0, 31, 0]]);
+            } else {
+	            doNewSend(["13c", [0, 12, 0]]);
+            }
+            autosecondary = false;
+            autoaim = false;
+        }, 220)
+    }
+
+    if (e.button == 0) {
+       hat(40);
+        acc(21)
+    }
+}
+                         )
+
+
+document.addEventListener("mouseup", e => {
+     setTimeout(hat(26),acc(13),20)
+})
+
+WebSocket.prototype.oldSend = WebSocket.prototype.send;
+WebSocket.prototype.send = function(m){
+    if (!ws){
+        document.ws = this;
+
+        ws = this;
+        socketFound(this);
+    }
+    this.oldSend(m);
+};
+
+
+function socketFound(socket){
+    socket.addEventListener('message', function(message){
+        handleMessage(message);
+    });
+}
+
+function handleMessage(m){
+    let temp = msgpack5.decode(new Uint8Array(m.data));
+    let data;
+    if(temp.length > 1) {
+        data = [temp[0], ...temp[1]];
+        if (data[1] instanceof Array){
+            data = data;
+        }
+    } else {
+      data = temp;
+    }
+    let item = data[0];
+    if(!data) {return};
+
+    if(item === "io-init") {
+            let cvs = document.getElementById("gameCanvas");
+            width = cvs.clientWidth;
+            height = cvs.clientHeight;
+            $(window).resize(function() {
+                width = cvs.clientWidth;
+                height = cvs.clientHeight;
+            });
+            cvs.addEventListener("mousemove", e => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+        }
+
+
+    if (item == "1" && myPlayer.id == null){
+        myPlayer.id = data[1];
+    }
+    if(item == "11"){
+        if(intrap == true) {
+                intrap = false;
+                clearInterval(trapbreaking);
+        }
+    }
+if(item == "12"){
+   setTimeout( () => {
+              doNewSend(["5", [primary, true]]);
+             }, 1);
+
+      place(spikeType, nearestEnemyAngle);
+ }
+    if (item == "33") {
+        enemiesNear = [];
+        for(let i = 0; i < data[1].length / 13; i++) {
+            let playerInfo = data[1].slice(13*i, 13*i+13);
+            if(playerInfo[0] == myPlayer.id) {
+                myPlayer.x = playerInfo[1];
+                myPlayer.y = playerInfo[2];
+                myPlayer.dir = playerInfo[3];
+                myPlayer.object = playerInfo[4];
+                myPlayer.weapon = playerInfo[5];
+                myPlayer.clan = playerInfo[7];
+                myPlayer.isLeader = playerInfo[8];
+                myPlayer.hat = playerInfo[9];
+                myPlayer.accessory = playerInfo[10];
+                myPlayer.isSkull = playerInfo[11];
+            } else if(playerInfo[7] != myPlayer.clan || playerInfo[7] === null) {
+                enemiesNear.push(playerInfo);
+            }
+        }
+    }
+
+if(item=="9"&&data[1]=='kills'){ doNewSend(["ch", ["gg - autoGG/EZ Master Race"]])}
+
+   if(item == "6"){
+        //console.log(data[1][7]==myPlayer.id,data)
+
+
+        for(let i = 0; i < data[1].length / 8; i++){
+            let objectInfo = data[1].slice(8*i, 8*i+8);
+            if(objectInfo[6] == 15 && objectInfo[7] != myPlayer.id){
+                trap_a = Math.atan2(objectInfo[2] - myPlayer.y, objectInfo[1] - myPlayer.x);
+                if(Math.sqrt(Math.pow((myPlayer.y-objectInfo[2]), 2) + Math.pow((myPlayer.x-objectInfo[1]), 2)) < 90){
+                    let pit={x:objectInfo[1],y:objectInfo[2]};
+                    intrap = true;
+                    trapid = objectInfo[0];
+                    clearInterval(trapbreaking);
+for(let i=0;i<360;i++)(place(spikeType,i));
+                    hat(40);
+                    acc(13);
+                    var atk=(dir)=>{doNewSend(['c',[1,dir]]);doNewSend(['c',[null,dir]])};
+                    window.trapbreaking=setInterval(() => {
+                        if(autobreak == true && intrap == true) {
+  if (myPlayer.weapon == 15){
+           doNewSend(["5", [primary, true]]);
+                  }
+                        if (myPlayer.weapon == 7){
+           doNewSend(["5", [secondary, true]]);
+                  }
+                                           if (myPlayer.secondary == 10){
+           doNewSend(["5", [secondary, true]]);
+                  }
+
+                            //chat('Breaking Test:'+Math.atan2(objectInfo[2] - myPlayer.y, objectInfo[1] - myPlayer.x))
+                            doNewSend(['2',[Math.atan2(objectInfo[2] - myPlayer.y, objectInfo[1] - myPlayer.x)]]);
+                            hat(40);
+                            acc(13);
+                            atk(Math.atan2(objectInfo[2] - myPlayer.y, objectInfo[1] - myPlayer.x));
+                        }else{clearInterval(trapbreaking);};
+                    },10)
+                }
+            }
+        }
+    }
+
+    if (item == "12") {
+
+        if(intrap == true) {
+            if(trapid == data[1]) {
+                intrap = false;
+                for (let i=0;i<4;i++){
+                    let angle = myPlayer.dir + toRad(i * 90);
+                    place(boostType, angle)
+                }
+
+                //clearInterval(trapbreaking)
+                doNewSend(["13c", [0, 26, 0]]);
+                doNewSend(["13c", [0, 11, 1]]);
+                 doNewSend(["5", [primary, true]]);
+    place(spikeType, nearestEnemyAngle);
+                clearInterval(trapbreaking);
+
+            }
+        }
+    }
+    isEnemyNear = false;
+    if(enemiesNear) {
+        nearestEnemy = enemiesNear.sort((a,b) => dist(a, myPlayer) - dist(b, myPlayer))[0];
+    }
+
+    if(nearestEnemy) {
+        nearestEnemyAngle = Math.atan2(nearestEnemy[2]-myPlayer.y, nearestEnemy[1]-myPlayer.x);
+        if(Math.sqrt(Math.pow((myPlayer.y-nearestEnemy[2]), 2) + Math.pow((myPlayer.x-nearestEnemy[1]), 2)) < 0) {
+            isEnemyNear = true;
+            if(autoaim == false && myPlayer.hat != 7 && myPlayer.hat != 53) {
+                normalHat = 6;
+                if(primary != 8) {
+                    normalAcc = 19
+                }
+            };
+        }
+    }
+
+
+    if (!nearestEnemy) {
+        nearestEnemyAngle = myPlayer.dir;
+    }
+        if(item == "h" && data[1] == myPlayer.id) {
+        if(data[2] < 41 && data[2] > 0 && aiboost == 1) {
+               place(foodType);
+               place(foodType);
+        }
+    }
+      if(item == "h" && data[1] == myPlayer.id) {
+        if(data[2] < 33 && aibull == 1) {
+                doNewSend(["ch", ["Ba7 Process"]]);
+             place(foodType);
+             place(foodType);
+            place(foodType);
+        }
+      }
+    if(item == "h" && data[1] == myPlayer.id) {
+        if(data[2] < 56 && data[2] > 0 && aisoldier == 1) {
+              doNewSend(["ch", ["Ba7 Process"]]);
+               place(foodType);
+            hat(6);
+            setTimeout( () => {
+                 hat(7);
+             }, 230);
+        }
+    }
+
+  if(item == "h" && data[1] == myPlayer.id && ab == 1) {
+        if(data[2] < 50 && healToggle == true && myPlayer.hat == 11) {
+        doNewSend(["ch", ["Anti-Skid Detect."]]);
+            autoaim = true;
+             doNewSend(["7", [1]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["c", [1, nearestEnemyAngle]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 21, 1]]);
+        doNewSend(["2", [nearestEnemyAngle]]);
+        setTimeout( () => {
+             doNewSend(["5", [primary, true]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 53, 0]]);
+          doNewSend(["13c", [0, 52, 0]]);
+        }, 100);
+        setTimeout( () => {
+          hat(6);
+          acc(21);
+          doNewSend(["5", [primary, true]]);
+        doNewSend(["5", [primary, true]]);
+        autoaim = false;
+             doNewSend(["7", [1]]);
+        doNewSend(["c", [0]]);
+        }, 230);
+     }
+  }
+
+if(item == "h" && data[1] == myPlayer.id) {
+       if(data[2] < 100 && data[2] > 0 && healToggle == 1) { //1
+           setTimeout( () => {
+               place(foodType, null);
+               place(foodType, null);
+               place(foodType, null);
+
+
+           }, 130);
+       }
+   }
+
+   update();
+}
+
+
+function doNewSend(sender){
+    ws.send(new Uint8Array(Array.from(msgpack5.encode(sender))));
+}
+
+function acc(id) {
+    doNewSend(["13c", [0, 0, 1]]);
+    doNewSend(["13c", [0, id, 1]]);
+}
+
+function hat(id) {
+    doNewSend(["13c", [0, id, 0]]);
+}
+
+
+function place(id, angle = Math.atan2(mouseY - height / 2, mouseX - width / 2)) { //Mill Placer
+    doNewSend(["5", [id, null]]);
+    doNewSend(["c", [1, angle]]);
+    doNewSend(["c", [0, angle]]);
+    doNewSend(["5", [null]]);
+       doNewSend(["5", [myPlayer.weapon, true]]);
+}
+
+
+function holding(id, angle = Math.atan2(mouseY - height / 2, mouseX - width / 2)) {
+    doNewSend(["5", [id, null]]);
+}
+
+function boostSpike() {
+        boostDir = nearestEnemyAngle;
+    place(spikeType, boostDir + toRad(90));
+    place(spikeType, boostDir - toRad(90));
+    place(boostType, boostDir);
+    doNewSend(["33", [boostDir]]);
+}
+
+
+
+var repeater = function(key, action, interval) {
+    let _isKeyDown = false;
+    let _intervalId = undefined;
+
+    return {
+        start(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = true;
+                if(_intervalId === undefined) {
+                    _intervalId = setInterval(() => {
+                        action();
+                        if(!_isKeyDown){
+                            clearInterval(_intervalId);
+                            _intervalId = undefined;
+                            console.log("claered");
+                        }
+                    }, interval);
+                }
+            }
+        },
+
+        stop(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = false;
+            }
+        }
+    };
+
+
+}
+
+if(isEnemyNear == false && autoaim == false) {
+        normalAcc = 11;
+        if (myPlayer.y < 2400){
+            normalHat = 15;
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+            normalHat = 31;
+        } else {
+	        normalHat = 12;
+        }
+    }
+    if (!nearestEnemy) {
+        nearestEnemyAngle = myPlayer.dir;
+    }
+
+var repeater2 = function(key, action) {
+    let _isKeyDown = false;
+
+    return {
+        start(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = true;
+            }
+        },
+
+        stop(keycode) {
+            if(keycode == key && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                _isKeyDown = false;
+            }
+        }
+    };
+
+
+}
+
+
+
+const Bruh=repeater(85,atk,30)
+const healer2 = repeater(81, () => {place(foodType, null);
+                                    place(foodType, null);
+                                    place(foodType, null)}, 30);
+const boostPlacer = repeater(70, () => {place(boostType);
+                                        place(boostType);
+                                        place(boostType);
+                                        place(boostType)}, 0);
+const fourSpawnpader = repeater(75, fourSpawnpad, 0);
+const spikePlacer = repeater(86, () => {place(spikeType);
+                                        place(spikeType);
+                                        place(spikeType);
+                                     place(spikeType, nearestEnemyAngle);
+                                        place(spikeType)}, 0);
+
+const millPlacer = repeater(78, () => {
+         place(millType, Math.atan2(mouseY - height / 2, mouseX - width / 2) + toRad(0xe53d2f0184));
+        place(millType, Math.atan2(mouseY - height / 2, mouseX - width / 2) + toRad(0xe53d2f0144));
+        place(millType, Math.atan2(mouseY - height / 2, mouseX - width / 2) + toRad(-0xe53d2f0144));
+;});
+const turretPlacer = repeater(72, () => {place(turretType)}, 0);
+
+document.addEventListener('keydown', (e)=>{
+    Bruh.start(e.keyCode)
+    spikePlacer.start(e.keyCode);
+    fourSpawnpader.start(e.keyCode);
+    healer2.start(e.keyCode);
+    boostPlacer.start(e.keyCode);
+    millPlacer.start(e.keyCode);
+    turretPlacer.start(e.keyCode);
+
+    if (e.keyCode == 67 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["13c", [1, 6, 0]]);
+        doNewSend(["13c", [0, 6, 0]]);
+           doNewSend(["13c", [1, 21, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+    }
+let normalDashPacket = new Uint8Array([135, 102, 37, 116, 94, 162, 44, 210, 28, 223, 1, 13, 113, 180]);
+
+
+        if (e.keyCode == 219) {
+            ws.oldSend(normalDashPacket);
+            doNewSend(["ch", [""]]);
+        }
+
+if (e.keyCode == 66 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["13c", [1, 7, 0]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+    }
+
+
+
+     if (e.keyCode == 85 && document.activeElement.id.toLowerCase() !== 'chatbox') {//y
+          doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 21, 0]]);
+        doNewSend(["13c", [0, 21, 0]]);
+                doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+    }
+        if (e.keyCode == 16 && document.activeElement.id.toLowerCase() !== 'chatbox') {//y
+
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 7, 0]]);
+        doNewSend(["13c", [0, 7, 0]]);
+                doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+    }
+    if (e.keyCode == 89 && document.activeElement.id.toLowerCase() !== 'chatbox') {//y
+             doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 11, 0]]);
+        doNewSend(["13c", [0, 11, 0]]);
+                doNewSend(["13c", [1, 21, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+    }
+     if (e.keyCode == 187 && document.activeElement.id.toLowerCase() !== 'chatbox') {//y
+            doNewSend(["ch", ["GG, You Clowned Me."]]);
+             doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 13, 0]]);
+        doNewSend(["13c", [0, 13, 0]]);
+                doNewSend(["13c", [1, 13, 1]]);
+        doNewSend(["13c", [0, 13, 1]]);
+    }
+     if (e.keyCode == 66 && document.activeElement.id.toLowerCase() !== 'chatbox') { //Tank Gear
+        click = true;
+         autoaim = true;
+         hit360 == 1;
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 7, 0]]);
+        doNewSend(["13c", [0, 7, 0]]);
+                doNewSend(["13c", [1, 13, 1]]);
+        doNewSend(["13c", [0, 13, 1]]);
+    }
+
+    if(e.code=="F4"){window.myToggle=!window.myToggle}
+    if (e.keyCode == 90 && document.activeElement.id.toLowerCase() !== 'chatbox') { //Tank Gear
+        click = true;
+        hit360 == 1;
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 40, 0]]);
+        doNewSend(["13c", [0, 40, 0]]);
+                doNewSend(["13c", [1, 21, 1]]);
+        doNewSend(["13c", [0, 21, 1]]);
+    }
+
+    if (e.keyCode == 221 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["13c", [1, 22, 0]]);
+        doNewSend(["13c", [0, 22, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+
+    }
+
+ if (e.keyCode == 77 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+        if (myPlayer.y < 2400){
+                doNewSend(["13c", [1, 11, 1]]);
+                doNewSend(["13c", [0, 11, 1]]);
+            doNewSend(["13c", [1, 15, 0]]);
+                doNewSend(["13c", [0, 15, 0]]);
+        } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+            doNewSend(["13c", [1, 11, 1]]);
+                doNewSend(["13c", [0, 11, 1]]);
+                doNewSend(["13c", [1, 31, 0]]);
+            doNewSend(["13c", [0, 31, 0]]);
+        } else {
+                doNewSend(["13c", [1, 11, 1]]);
+            doNewSend(["13c", [0, 11, 1]]);
+                doNewSend(["13c", [1, 12, 0]]);
+            doNewSend(["13c", [0, 12, 0]]);
+        }
+    }
+     if (e.keyCode == 186 && document.activeElement.id.toLowerCase() !== 'chatbox') {//;
+        for (let i=0;i<4;i++){
+            let angle = myPlayer.dir + toRad(i * 90);
+            place(spikeType, angle)
+        }
+    }
+
+
+    if(e.code=='y'||e.code=="Y"){hat(11);acc(21)}
+   if (window.myToggle&&e.keyCode == 50 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+
+        doNewSend(["5", [secondary, true]]);
+        doNewSend(["13c", [1, 20, 0]]);
+        doNewSend(["13c", [0, 20, 0]]);
+        setTimeout( () => {
+
+        }, 600);
+        setTimeout( () => {
+
+        }, 1200);
+        setTimeout( () => {
+
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 12, 0]]);
+        }, 1750);
+    }
+    if (e.keyCode == 192 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(['5', ['length', !0]]);
+        doNewSend(["ch", [""]]);
+    }
+  if(e.keyCode == 32 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        autoaim = true;
+        doNewSend(["5", [primary, true]]);
+        doNewSend(["13c", [0, 7, 0]]);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 18, 1]]);
+      place(spikeType, nearestEnemyAngle + toRad(45));
+        place(spikeType, nearestEnemyAngle - toRad(45));
+        doNewSend(["c", [1]]);
+
+        setTimeout( () => {
+            doNewSend(["13c", [0, 53, 0]]);
+                  doNewSend(["13c", [0, 13, 1]]);
+        }, 100);
+
+        setTimeout( () => {
+            doNewSend(["c", [0, null]]);
+            doNewSend(["13c", [0, 6, 0]]);
+                  doNewSend(["13c", [0, 21, 1]]);
+            autoaim = false;
+        }, 200);
+    }
+      if(e.keyCode == 80 && document.activeElement.id.toLowerCase() !== 'chatbox') {//p
+        aisoldier = (aisoldier + 1) % 2;
+        if(aisoldier==1){
+            doNewSend(["ch", ["55 on"]]);
+        }else{
+            doNewSend(["ch", ["55 off"]]);
+        }
+    }
+        if(e.keyCode == 190 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+                    hit360 = (hit360 + 1) % 2;
+                    if (hit360 == 1) {
+                        doNewSend(["ch", ["."]]);
+                    } else {
+                        doNewSend(["ch", ["..."]]);
+                    };
+                };
+
+    if(e.keyCode == 220 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["ch", ["(M.V.P) Terminator#6108"]]);
+    }
+    if(e.keyCode == 73 && document.activeElement.id.toLowerCase() !== 'chatbox') {//p
+        ab = (ab + 1) % 2;
+        if(ab==1){
+            doNewSend(["ch", ["anti-Skid on"]]);
+        }else{
+            doNewSend(["ch", ["anti-Skid off"]]);
+        }
+    }
+
+    if(e.keyCode == 79 && document.activeElement.id.toLowerCase() !== 'chatbox') {//p
+        aiboost = (aiboost + 1) % 2;
+        if(aiboost==1){
+            doNewSend(["ch", ["40 on"]]);
+        }else{
+            doNewSend(["ch", ["40 off"]]);
+        }
+    }
+    if(e.keyCode == 74 && document.activeElement.id.toLowerCase() !== 'chatbox') {//p
+        aibull = (aibull + 1) % 2;
+        if(aibull==1){
+            doNewSend(["ch", ["32 on"]]);
+        }else{
+            doNewSend(["ch", ["32 off"]]);
+        }
+    }
+    if(e.keyCode == 84 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+               hit360 == 0;
+        autoaim = true;
+            autoprimary = true;
+            autosecondary = false;
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["13c", [1, 6, 0]]);
+            doNewSend(["13c", [0, 6, 0]]);
+            doNewSend(["13c", [1, 13, 1]]);
+            doNewSend(["13c", [0, 13, 1]]);
+
+        setTimeout( () => {
+            autoprimary = false;
+            autosecondary = true;
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 53, 0]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["13c", [1, 21, 1]]);
+            doNewSend(["13c", [0, 21, 1]]);
+            doNewSend(["5", [secondary, true]]);
+        }, 110);
+        setTimeout( () => {
+            doNewSend(["7", [1]]);
+            doNewSend(["5", [primary, true]]);
+            autosecondary = false;
+            autoaim = false;
+                           doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [0, 11, 1]]);
+            if (myPlayer.y < 2400){
+                doNewSend(["13c", [0, 15, 0]]);
+            } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+                doNewSend(["13c", [0, 31, 0]]);
+            } else {
+                doNewSend(["13c", [0, 6, 0]]);
+            }
+        }, 220);
+    }
+ if(e.keyCode == 48 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+               hit360 == 0;
+        autoaim = true;
+            autoprimary = true;
+            autosecondary = false;
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["13c", [1, 55, 0]]);
+            doNewSend(["13c", [0, 55, 0]]);
+            doNewSend(["13c", [1, 18, 1]]);
+            doNewSend(["13c", [0, 18, 1]]);
+
+        setTimeout( () => {
+            autoprimary = false;
+            autosecondary = true;
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 53, 0]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["13c", [1, 21, 1]]);
+            doNewSend(["13c", [0, 21, 1]]);
+            doNewSend(["5", [secondary, true]]);
+        }, 110);
+        setTimeout( () => {
+            doNewSend(["7", [1]]);
+            doNewSend(["5", [primary, true]]);
+            autosecondary = false;
+            autoaim = false;
+                           doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [0, 11, 1]]);
+            if (myPlayer.y < 2400){
+                doNewSend(["13c", [0, 15, 0]]);
+            } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+                doNewSend(["13c", [0, 31, 0]]);
+            } else {
+                doNewSend(["13c", [0, 6, 0]]);
+            }
+        }, 220);
+    }
+ if(e.keyCode == 76 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+       autoaim = true;
+       doNewSend(["5", [secondary, true]]);
+     doNewSend(["5", [secondary, true]]);
+       doNewSend(["13c", [0, 53, 0]]);
+       doNewSend(["c", [1]]);
+
+       setTimeout( () => {
+
+           doNewSend(["6", [12]]);
+
+       }, 120);
+
+       setTimeout( () => {
+           doNewSend(["6", [15]]);
+
+       }, 220);
+
+       setTimeout( () => {
+           doNewSend(["c", [0]]);
+           doNewSend(["5", [primary, true]]);
+           doNewSend(["13c", [0, 12, 0]]);
+           doNewSend(["13c", [0, 11, 1]]);
+           autoaim = false;
+       }, 320);
+   }
+    if(e.keyCode == 106 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        healToggle = (healToggle + 1) % 2;
+    }
+    if(e.keyCode == 109 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        katana = (katana + 1) % 2;
+    }
+
+  if(e.keyCode == 35 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        doNewSend(["6", [7]]);
+        doNewSend(["6", [17]]);
+        doNewSend(["6", [31]]);
+        doNewSend(["6", [23]]);
+        doNewSend(["6", [10]]);
+        doNewSend(["6", [38]]);
+        doNewSend(["6", [4]]);
+        doNewSend(["6", [15]]);
+    }
+if(e.keyCode == 113 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        clickInsta = (clickInsta + 1) % 2;
+    }
+
+      if(e.keyCode == 82 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+           hit360 == 0;
+          autoprimary = true;
+            autosecondary = false;
+            autoaim = true;
+            autoprimary = true;
+            autosecondary = false;
+            doNewSend(["13c", [0, 0, 1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["13c", [1, 7, 0]]);
+            doNewSend(["13c", [0, 7, 0]]);
+            doNewSend(["13c", [1, 21, 1]]);
+            doNewSend(["13c", [0, 21, 1]]);
+        setTimeout( () => {
+            autoprimary = false;
+            autosecondary = true;
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 53, 0]]);
+            doNewSend(["13c", [0, 53, 0]]);
+            doNewSend(["5", [secondary, true]]);
+        }, 110);
+        setTimeout( () => {
+            doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["7", [1]]);
+            doNewSend(["5", [primary, true]]);
+            doNewSend(["13c", [0, 11, 1]]);
+            if (myPlayer.y < 2400){
+                doNewSend(["13c", [0, 15, 0]]);
+            } else if (myPlayer.y > 6850 && myPlayer.y < 7550){
+                doNewSend(["13c", [0, 31, 0]]);
+            } else {
+	            doNewSend(["13c", [0, 6, 0]]);
+            }
+            autosecondary = false;
+            autoaim = false;
+        }, 220);
+    }
+    })
+document.addEventListener('keyup', (e)=>{
+    Bruh.stop(e.keyCode)
+
+if (e.keyCode == 188 && document.activeElement.id.toLowerCase() !== 'chatbox') {
+        if (ChatSpam) {
+            ChatSpam1 = setTimeout(function () { ChatSpamFC1(); }, 0);
+        } else {
+            clearTimeout(ChatSpam1);
+            clearTimeout(ChatSpam2);
+            clearTimeout(ChatSpam3);
+            clearTimeout(ChatSpam4);
+            clearTimeout(ChatSpam5);
+            clearTimeout(ChatSpam6);
+            clearTimeout(ChatSpam7);
+            clearTimeout(ChatSpam8);
+            clearTimeout(ChatSpam9);
+            clearTimeout(ChatSpam10);
+            clearTimeout(ChatSpam11);
+            clearTimeout(ChatSpam12);
+            clearTimeout(ChatSpam13);
+            clearTimeout(ChatSpam14);
+            clearTimeout(ChatSpam15);
+            clearTimeout(ChatSpam16);
+        }
+        ChatSpam = !ChatSpam;
+    }
+})
+document.addEventListener('keyup', (e)=>{
+    spikePlacer.stop(e.keyCode);
+    fourSpawnpader.stop(e.keyCode);
+    boostPlacer.stop(e.keyCode);
+    millPlacer.stop(e.keyCode);
+    turretPlacer.stop(e.keyCode);
+    healer2.stop(e.keyCode);
+     if (e.keyCode == 66 && document.activeElement.id.toLowerCase() !== 'chatbox') { //Tank Gear
+        click = false;
+         autoaim = false;
+             hit360 == 0;
+               place(spikeType, nearestEnemyAngle);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+        doNewSend(["13c", [1, 26, 0]]);
+        doNewSend(["13c", [0, 26, 0]]);
+                doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+    }
+    if (e.keyCode == 85 && document.activeElement.id.toLowerCase() !== 'chatbox') {//Tank gear
+              place(spikeType, nearestEnemyAngle);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+        doNewSend(["13c", [1, 26, 0]]);
+        doNewSend(["13c", [0, 26, 0]]);
+    }
+    if (e.keyCode == 90 && document.activeElement.id.toLowerCase() !== 'chatbox') {//Tank gear
+        click = false;
+            hit360 == 0;
+              place(spikeType, nearestEnemyAngle);
+        doNewSend(["13c", [0, 0, 1]]);
+        doNewSend(["13c", [0, 0, 0]]);
+            doNewSend(["13c", [1, 11, 1]]);
+        doNewSend(["13c", [0, 11, 1]]);
+        doNewSend(["13c", [1, 26, 0]]);
+        doNewSend(["13c", [0, 26, 0]]);
+    }
+})
+
+var ChatSpam1;
+var ChatSpam2;
+var ChatSpam3;
+var ChatSpam4;
+var ChatSpam5;
+var ChatSpam6;
+var ChatSpam7;
+var ChatSpam8;
+var ChatSpam9;
+var ChatSpam10;
+var ChatSpam11;
+var ChatSpam12;
+var ChatSpam13;
+var ChatSpam14;
+var ChatSpam15;
+var ChatSpam16;
+var ChatSpam = true;
+let used={};
+let msg=`your times up bud
+you still Breastfeed
+i can do pit insta
+your dogwater
+oof why u bully me
+what is this
+gods are invincible
+ok bud
+imagine playing 2d game
+I'm a G.O.D.
+IM immortal
+U cant kill me
+Cauese im immortallity
+I beat u
+I know ur noob
+im legend
+Legend neverdie
+(M.V.P) Terminator#6108_
+your mom gay
+stfu noob
+imagine dying
+bruh
+dude cmon
+yo!
+I cant die
+Ez
+i am the G.O.A.T.
+EZEZ
+haha kid
+So good byenoob
+i can insta u
+il do a q insta
+(M.V.P) Terminator#6108`.split('\n');
+function random(arr){return arr[Math.floor(Math.random() * arr.length)];}
+function gmsg(){
+    let a=msg[Math.floor(Math.random() * msg.length)];;if(!used[a]){used[a]=1;setTimeout(()=>{used[a]=0},5000);return a}else{return gmsg();}
+}
+function ChatSpamFC1() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam1);
+    ChatSpam1 = setTimeout(function () { ChatSpamFC2(); }, 2000);
+}
+function ChatSpamFC2() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam2);
+    ChatSpam3 = setTimeout(function () { ChatSpamFC3(); }, 2000);
+}
+function ChatSpamFC3() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam3);
+    ChatSpam4 = setTimeout(function () { ChatSpamFC4(); }, 2000);
+}
+function ChatSpamFC4() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam4);
+    ChatSpam5 = setTimeout(function () { ChatSpamFC5(); }, 2000);
+}
+function ChatSpamFC5() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam5);
+    ChatSpam6 = setTimeout(function () { ChatSpamFC6(); }, 2000);
+}
+function ChatSpamFC6() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam6);
+    ChatSpam7 = setTimeout(function () { ChatSpamFC7(); }, 2000);
+}
+function ChatSpamFC7() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam7);
+    ChatSpam8 = setTimeout(function () { ChatSpamFC8(); }, 2000);
+}
+function ChatSpamFC8() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam8);
+    ChatSpam9 = setTimeout(function () { ChatSpamFC9(); }, 2000);
+}
+function ChatSpamFC9() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam9);
+    ChatSpam10 = setTimeout(function () { ChatSpamFC10(); }, 2000);
+}
+function ChatSpamFC10() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam10);
+    ChatSpam11 = setTimeout(function () { ChatSpamFC11(); }, 2000);
+}
+function ChatSpamFC11() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam11);
+    ChatSpam12 = setTimeout(function () { ChatSpamFC12(); }, 2000);
+}
+function ChatSpamFC12() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam12);
+    ChatSpam13 = setTimeout(function () { ChatSpamFC13(); }, 2000);
+}
+function ChatSpamFC13() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam13);
+    ChatSpam14 = setTimeout(function () { ChatSpamFC14(); }, 2000);
+}
+function ChatSpamFC14() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam14);
+    ChatSpam15 = setTimeout(function () { ChatSpamFC15(); }, 2000);
+}
+function ChatSpamFC15() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam15);
+    ChatSpam16 = setTimeout(function () { ChatSpamFC16(); }, 2000);
+}
+function ChatSpamFC16() {
+    doNewSend(["ch", [gmsg()]]);
+    clearTimeout(ChatSpam16);
+    ChatSpam1 = setTimeout(function () { ChatSpamFC1(); }, 2000);
+}
+
+
+function isElementVisible(e) {
+    return (e.offsetParent !== null);
+}
+
+function fourSpawnpad() {
+       place(spawnpadType, myPlayer.dir + toRad(135));
+       place(spawnpadType, myPlayer.dir + toRad(150));
+       place(spawnpadType, myPlayer.dir + toRad(165));
+       place(spawnpadType, myPlayer.dir + toRad(180));
+       place(spawnpadType, myPlayer.dir + toRad(270));
+       place(spawnpadType, myPlayer.dir + toRad(360));
+}
+
+function toRad(angle) {
+    return angle * 0.01745329251;
+}
+
+function dist(a, b){
+    return Math.sqrt( Math.pow((b.y-a[2]), 2) + Math.pow((b.x-a[1]), 2) );
+}
+
+function update() {
+    for (let i=0;i<9;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            primary = i;
+        }
+    }
+
+    for (let i=9;i<16;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            secondary = i;
+        }
+    }
+
+    for (let i=16;i<19;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            foodType = i - 16;
+        }
+    }
+
+    for (let i=19;i<22;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            wallType = i - 16;
+        }
+    }
+
+    for (let i=22;i<26;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            spikeType = i - 16;
+        }
+    }
+
+    for (let i=26;i<29;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            millType = i - 16;
+        }
+    }
+
+    for (let i=29;i<31;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            mineType = i - 16;
+        }
+    }
+
+    for (let i=31;i<33;i++){
+        if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+            boostType = i - 16;
+        }
+    }
+
+   for (let i=33;i<36;i++){
+       if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+           turretType = i - 16;
+       }
+   }
+
+   for (let i=36;i<37;i++){
+       if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+           spawnpadType = i - 16;
+       }
+   }
+
+   for (let i=37;i<39;i++){
+       if (isElementVisible(document.getElementById("actionBarItem" + i.toString()))){
+           turretType = i - 16;
+
+       }
+   }
+}
+// ==UserScript==
+// @version      none
+// @description  this mod takes out some things that will help ease up on the fps!
+// @match                 *://moomoo.io/*
+// @match                 *://sandbox.moomoo.io/*
+// @match                 *://dev.moomoo.io/*
+// @grant        none
+// ==/UserScript==
+
+//ad remover
+window.atk=function(dir=nearestEnemyAngle){doNewSend(['c', [1, dir]]);doNewSend(['c', [0, (dir)]]);}
+var areplacer = document.getElementsByClassName("areplacer");
+var count = areplacer.length;
+var i;
+let hit360 = 0;
+            setInterval(()=>{
+                if (hit360) doNewSend(["2", [90**100]]);
+            }, 0);
+
+
+for(i = 0;i < count;i++)
+{
+    areplacer[0].parentNode.removeChild(areplacer[0]);
+}
+const boostSpiker = repeater(48, boostSpike, 0);
+document.addEventListener('keydown', (e)=>{
+    boostSpiker.start(e.keyCode);
+})
+document.addEventListener('keyup', (e)=>{
+    boostSpiker.stop(e.keyCode);
+    //Cbiome();
+})
+setInterval(()=>{
+    BS&&(boostSpike(boostDir=nearestEnemyAngle));
+},32)
+window.spikePlacer=spikePlacer;
